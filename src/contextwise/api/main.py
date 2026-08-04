@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
+from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from contextwise.api.dependencies import get_state, init_state
@@ -11,7 +12,7 @@ from contextwise.logging_config import configure_logging
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> Any:
     state = get_state()
     configure_logging(state.settings)
     await state.database.init()
@@ -32,7 +33,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health_router)
 
     @app.exception_handler(Exception)
-    async def global_exception_handler(request, exc):
+    async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
         return JSONResponse(
             status_code=500,
             content={

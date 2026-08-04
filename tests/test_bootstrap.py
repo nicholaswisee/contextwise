@@ -6,6 +6,7 @@ def test_package_version_exists():
 
 
 def test_main_module_runs_without_error():
-    import contextwise.__main__
+    import importlib
 
+    importlib.import_module("contextwise.__main__")
     assert True

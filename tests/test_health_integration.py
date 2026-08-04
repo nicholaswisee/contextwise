@@ -16,7 +16,7 @@ def get_test_database_url():
 
 
 @pytest.fixture
-async def app_with_db(monkeypatch):
+async def app_with_db(monkeypatch, apply_migrations):
     monkeypatch.setenv("DATABASE_URL", get_test_database_url())
     settings = Settings()
     return create_app(settings)

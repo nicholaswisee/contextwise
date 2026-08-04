@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException
 
 from contextwise.api.dependencies import get_database
@@ -13,7 +15,9 @@ async def health_live() -> dict[str, str]:
 
 
 @router.get("/ready")
-async def health_ready(database: Database = Depends(get_database)) -> dict[str, str]:
+async def health_ready(
+    database: Annotated[Database, Depends(get_database)],
+) -> dict[str, str]:
     service = HealthService(database)
     if not await service.is_ready():
         raise HTTPException(status_code=503, detail={"status": "not ready"})
