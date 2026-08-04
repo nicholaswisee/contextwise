@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+venv/
+
+# Environment
+.env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+
+# Alembic local
+*.sqlite3
+
+# Docker volumes
+postgres-data/
+
+# Superpowers plans are working artifacts
+# Keep only final plans; drop temp scratch files
+docs/superpowers/scratch/
