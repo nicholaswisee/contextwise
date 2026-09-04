@@ -4,9 +4,10 @@ from pydantic import ValidationError
 from contextwise.config import Settings
 
 
-def test_settings_require_database_url():
+def test_settings_require_database_url(monkeypatch):
+    monkeypatch.delenv("DATABASE_URL", raising=False)
     with pytest.raises(ValidationError):
-        Settings()
+        Settings(_env_file=None)
 
 
 def test_settings_load_from_env(monkeypatch):
