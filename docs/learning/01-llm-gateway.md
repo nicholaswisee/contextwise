@@ -14,11 +14,12 @@ Contextwise now has a provider-neutral `LLMClient` boundary, deterministic fake 
 ## What was hard
 
 - SQLAlchemy's typed `DeclarativeBase` was needed once the first mapped model was added; the earlier `declarative_base()` was too imprecise for strict mypy.
-- HTTP streaming needs its own lifecycle path; generating a full response before emitting SSE does not test upstream cancellation.
+- HTTP streaming needs its own lifecycle path; generating a full response before emitting SSE does not test upstream cancellation or client disconnect cleanup.
 - LiteLLM adapter tests must patch the local adapter boundary, not use real credentials.
 
 ## Open questions
 
 - A real provider comparison is pending explicit credentials.
+- Structured streaming is intentionally rejected until it can validate the final response.
 - Streaming fallback policy is intentionally not implemented; fallback occurs before a stream begins.
-- Cost estimates are stored as `0` for fake results until provider-specific pricing reconciliation is added.
+- Cost estimates are persisted as `0` for fake results until provider-specific pricing reconciliation is added.

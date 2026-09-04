@@ -43,7 +43,7 @@ Provider error content is reduced to internal error codes in HTTP responses and 
 
 ## 7. Operational Review
 
-- Invocation records expose status, latency, tokens, retry count, fallback use, and finish reason.
+- Invocation records expose status, latency, tokens, zero fake-provider cost, retry count, fallback use, and finish reason.
 - The deterministic fake baseline contains no provider credentials or raw prompt persistence.
 - Real-provider latency, cost, and time-to-first-token measurements require explicit credentials.
 
