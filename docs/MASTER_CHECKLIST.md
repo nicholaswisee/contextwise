@@ -2,12 +2,12 @@
 
 ## Milestone 0 — Engineering Foundation
 
-- [ ] User story demonstrated
-- [ ] Required deliverables complete
-- [ ] Deterministic tests pass
+- [x] User story demonstrated
+- [x] Required deliverables complete
+- [x] Deterministic tests pass
 - [ ] Behavioral evaluation stored
 - [ ] Security/privacy review complete
-- [ ] Learning note complete
+- [x] Learning note complete
 - [ ] Retrospective complete
 - [ ] Release tagged
 - [ ] Exit gate: PASS

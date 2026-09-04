@@ -156,13 +156,13 @@ Before starting Milestone 1, verify:
 
 - [x] All required deliverables are complete or explicitly removed through an ADR.
 - [x] All acceptance criteria pass.
-- [x] Required tests pass locally and in CI.
-- [x] The behavioral evaluation has a stored baseline.
+- [ ] Required tests pass locally and in CI.
+- [ ] The behavioral evaluation has a stored baseline.
 - [x] The demo works from a clean environment.
-- [x] Security and privacy review is complete.
-- [x] The learning note and retrospective are committed.
+- [ ] Security and privacy review is complete.
+- [ ] The learning note and retrospective are committed.
 - [ ] The release tag exists and points to the evaluated commit.
 
-**Decision:** `PASS WITH DOCUMENTED DEBT` — startup/shutdown lifecycle diagram, formal retrospective, and release tag are pending merge to `main`.
+**Decision:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN` — the foundation and local checks are complete, but the startup/shutdown lifecycle diagram, graceful-shutdown test, formal retrospective, CI/evaluation evidence, security/privacy review, and release tag remain outstanding.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
