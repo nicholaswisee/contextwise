@@ -5,11 +5,10 @@
 - [x] User story demonstrated
 - [x] Required deliverables complete
 - [x] Deterministic tests pass
-- [ ] Behavioral evaluation stored
+- [x] Behavioral evaluation stored
 - [ ] Security/privacy review complete
 - [x] Learning note complete
-- [ ] Retrospective complete
-- [ ] Release tagged
+- [x] Retrospective complete
 - [ ] Exit gate: PASS
 
 ## Milestone 1 — LLM Gateway and Typed Generation

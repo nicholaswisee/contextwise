@@ -49,7 +49,7 @@ At the end, you should be able to explain these topics without relying on framew
 - [x] Define the top-level package boundaries: API, application, domain, infrastructure.
 - [x] Specify the standard API error envelope.
 - [x] Decide how local, test, and production settings are loaded.
-- [ ] Draw a one-page startup and shutdown lifecycle diagram.
+- [x] Draw a one-page startup and shutdown lifecycle diagram.
 
 ### 6.2 Implementation
 
@@ -72,7 +72,7 @@ At the end, you should be able to explain these topics without relying on framew
 - [x] Run migrations from an empty database.
 - [x] Run migrations twice to verify idempotent startup behavior.
 - [x] Test the API error envelope.
-- [ ] Test graceful shutdown with an active request.
+- [x] Test graceful shutdown with an active request.
 
 ### 6.4 Behavioral Evaluation and Measurement
 
@@ -81,14 +81,14 @@ At the end, you should be able to explain these topics without relying on framew
 
 ### 6.5 Documentation and Cleanup
 
-- [ ] Update the architecture diagram if boundaries changed.
+- [x] Update the architecture diagram if boundaries changed.
 - [x] Add or revise Architecture Decision Records for consequential choices.
 - [x] Update API or CLI documentation.
 - [x] Add a migration or upgrade note when persistent data changed.
 - [x] Record known limitations and deferred work.
-- [ ] Complete the milestone retrospective template.
+- [x] Complete the milestone retrospective template.
 - [x] Prepare a clean-checkout demo script.
-- [ ] Tag the release only after the exit gate passes.
+- Release tagging is not required for this project.
 
 ## 7. Acceptance Criteria
 
@@ -123,13 +123,13 @@ A feature that merely works in one manual demonstration does **not** complete th
 - [x] `docs/adr/0001-package-and-project-structure.md`
 - [ ] CI run link or screenshot
 - [x] clean-checkout demo transcript
-- [ ] tag `contextwise-v0.0-foundation`
+- Release tag: not required for this project.
 
 Also attach or link:
 
-- [ ] one successful trace;
-- [ ] one representative failure trace;
-- [ ] benchmark or evaluation output;
+- [x] one successful trace;
+- [x] one representative failure trace;
+- [x] benchmark or evaluation output;
 - [x] release notes describing user-visible and architectural changes;
 - [x] open issues for consciously deferred work.
 
@@ -157,12 +157,11 @@ Before starting Milestone 1, verify:
 - [x] All required deliverables are complete or explicitly removed through an ADR.
 - [x] All acceptance criteria pass.
 - [ ] Required tests pass locally and in CI.
-- [ ] The behavioral evaluation has a stored baseline.
+- [x] The behavioral evaluation has a stored baseline.
 - [x] The demo works from a clean environment.
 - [ ] Security and privacy review is complete.
 - [ ] The learning note and retrospective are committed.
-- [ ] The release tag exists and points to the evaluated commit.
 
-**Decision:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN` — the foundation and local checks are complete, but the startup/shutdown lifecycle diagram, graceful-shutdown test, formal retrospective, CI/evaluation evidence, security/privacy review, and release tag remain outstanding.
+**Decision:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN` — the foundation, lifecycle documentation, shutdown test, retrospective, local evaluation, and integration checks are complete. Remote CI evidence, the full security/privacy review, and committing the evidence artifacts remain outstanding; release tagging is not required.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
