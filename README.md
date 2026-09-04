@@ -17,7 +17,7 @@ A production-grade, context-aware personal AI workspace — built as a solo lear
 
 ## Current Status
 
-**Planning phase — Milestone 0 not started.** The repo contains the full project pack (brief, milestones, templates, checklists) but no application code yet.
+**Milestone 0 implementation is in place.** The local quality checks pass, but the milestone exit gate remains open for the documented evidence and follow-up work listed in the milestone file.
 
 ## Getting Started
 
