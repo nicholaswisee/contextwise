@@ -1,7 +1,9 @@
+import asyncio
+
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from contextwise.api.main import create_app
+from contextwise.api.main import create_app, lifespan
 from contextwise.config import Settings
 
 
@@ -45,3 +47,42 @@ async def test_request_id_header_returned(app):
         response = await client.get("/health/live")
     assert "x-request-id" in response.headers
     assert response.headers["x-request-id"]
+
+
+@pytest.mark.asyncio
+async def test_shutdown_waits_for_active_request(app):
+    request_started = asyncio.Event()
+    release_request = asyncio.Event()
+
+    @app.get("/slow")
+    async def slow_request():
+        request_started.set()
+        await release_request.wait()
+        return {"status": "done"}
+
+    app_lifespan = lifespan(app)
+    await app_lifespan.__aenter__()
+    client = _client(app)
+    await client.__aenter__()
+    request_task = asyncio.create_task(client.get("/slow"))
+    shutdown_task = None
+
+    try:
+        await request_started.wait()
+        shutdown_task = asyncio.create_task(app_lifespan.__aexit__(None, None, None))
+        await asyncio.sleep(0)
+        assert not shutdown_task.done()
+
+        release_request.set()
+        response = await request_task
+        await shutdown_task
+
+        assert response.status_code == 200
+        assert response.json() == {"status": "done"}
+    finally:
+        release_request.set()
+        if not request_task.done():
+            await request_task
+        if shutdown_task is not None and not shutdown_task.done():
+            await shutdown_task
+        await client.__aexit__(None, None, None)

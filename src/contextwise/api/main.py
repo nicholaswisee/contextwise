@@ -17,6 +17,7 @@ async def lifespan(app: FastAPI) -> Any:
     configure_logging(state.settings)
     await state.database.init()
     yield
+    await state.wait_for_requests()
     await state.database.close()
 
 
