@@ -1,5 +1,5 @@
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Mapping
 from time import perf_counter
 from typing import Protocol
 
@@ -81,11 +81,12 @@ class GenerationService:
         model_registry: ModelRegistry,
         prompt_registry: PromptRegistry,
         schema_registry: SchemaRegistry,
-        clients: dict[str, LLMClient],
+        clients: Mapping[str, LLMClient],
         repository: InvocationStore,
         max_retries: int,
         structured_repair_attempts: int,
         fallback_model: str | None,
+        primary_model: str = "fake-default",
     ):
         self.model_registry = model_registry
         self.prompt_registry = prompt_registry
@@ -95,9 +96,10 @@ class GenerationService:
         self.max_retries = max_retries
         self.structured_repair_attempts = structured_repair_attempts
         self.fallback_model = fallback_model
+        self.primary_model = primary_model
 
     async def generate(self, input: GenerationInput, request_id: str) -> GenerationOutput:
-        model_name = input.model or "fake-default"
+        model_name = input.model or self.primary_model
         model = self.model_registry.get(model_name)
         prompt_name = input.prompt_name or "direct"
         prompt, prompt_version = self.prompt_registry.render(

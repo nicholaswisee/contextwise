@@ -44,6 +44,8 @@ class InvocationRepository:
         async with self.session_factory.begin() as session:
             invocation = await self._get_required(session, invocation_id)
             invocation.status = "completed"
+            invocation.provider = result.provider
+            invocation.model = result.model
             invocation.completed_at = datetime.now(UTC)
             invocation.latency_ms = latency_ms
             invocation.input_tokens = result.usage.input_tokens

@@ -1,3 +1,4 @@
+import json
 from collections.abc import AsyncIterator
 
 from contextwise.application.llm.contracts import LLMRequest, LLMResult, LLMStreamChunk, LLMUsage
@@ -9,11 +10,13 @@ class FakeLLMClient:
         self,
         provider: str = "fake",
         text: str = "Hello from fake provider.",
+        structured_json: str | None = None,
         stream_chunks: tuple[str, ...] | None = None,
         failures: tuple[LLMError, ...] = (),
     ):
         self.provider = provider
         self.text = text
+        self.structured_json = structured_json
         self.stream_chunks = stream_chunks or (text,)
         self.failures = list(failures)
         self.calls: list[LLMRequest] = []
@@ -21,11 +24,12 @@ class FakeLLMClient:
     async def generate(self, request: LLMRequest) -> LLMResult:
         self.calls.append(request)
         self._raise_next_failure()
+        text = self._structured_text(request)
         return LLMResult(
-            text=self.text,
+            text=text,
             provider=self.provider,
             model=request.model,
-            usage=self._usage(request, self.text),
+            usage=self._usage(request, text),
             finish_reason="stop",
         )
 
@@ -42,6 +46,14 @@ class FakeLLMClient:
     def _raise_next_failure(self) -> None:
         if self.failures:
             raise self.failures.pop(0)
+
+    def _structured_text(self, request: LLMRequest) -> str:
+        if request.response_schema is None:
+            return self.text
+        if self.structured_json is not None:
+            return self.structured_json
+        field_name = next(iter(request.response_schema.model_fields))
+        return json.dumps({field_name: self.text})
 
     @staticmethod
     def _usage(request: LLMRequest, output: str) -> LLMUsage:
