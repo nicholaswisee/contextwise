@@ -24,6 +24,7 @@ class InvocationResponse(BaseModel):
     input_tokens: int | None
     output_tokens: int | None
     total_tokens: int | None
+    estimated_cost_usd: float | None
     finish_reason: str | None
     retry_count: int
     fallback_used: bool
@@ -52,6 +53,7 @@ async def get_invocation(
         input_tokens=invocation.input_tokens,
         output_tokens=invocation.output_tokens,
         total_tokens=invocation.total_tokens,
+        estimated_cost_usd=invocation.estimated_cost_usd,
         finish_reason=invocation.finish_reason,
         retry_count=invocation.retry_count,
         fallback_used=invocation.fallback_used,

@@ -1,5 +1,5 @@
 import asyncio
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from time import perf_counter
 from typing import Protocol
 
@@ -13,7 +13,7 @@ from contextwise.application.llm.contracts import (
     LLMStreamChunk,
     LLMUsage,
 )
-from contextwise.application.llm.errors import LLMError, LLMStructuredOutputError
+from contextwise.application.llm.errors import LLMError, LLMProviderError, LLMStructuredOutputError
 from contextwise.application.llm.model_registry import ModelRegistry
 from contextwise.application.llm.prompt_registry import PromptRegistry
 from contextwise.application.llm.schema_registry import SchemaRegistry
@@ -36,6 +36,7 @@ class InvocationStore(Protocol):
         latency_ms: int,
         retry_count: int,
         fallback_used: bool,
+        estimated_cost_usd: float,
     ) -> None: ...
 
     async def fail(
@@ -69,6 +70,7 @@ class GenerationOutput(BaseModel):
     prompt_name: str | None
     prompt_version: int | None
     usage: LLMUsage
+    estimated_cost_usd: float
     latency_ms: int
     retry_count: int
     fallback_used: bool
@@ -134,6 +136,7 @@ class GenerationService:
                 )
                 retry_count += repair_count
         except LLMError as primary_error:
+            retry_count += primary_error.retry_count
             if not self.fallback_model or not primary_error.retryable:
                 await self.repository.fail(
                     invocation_id,
@@ -157,6 +160,7 @@ class GenerationService:
                     )
                     retry_count += repair_count
             except LLMError as fallback_error:
+                retry_count += fallback_error.retry_count
                 await self.repository.fail(
                     invocation_id,
                     fallback_error,
@@ -165,10 +169,30 @@ class GenerationService:
                     fallback_used,
                 )
                 raise
+            except Exception as error:
+                provider_error = LLMProviderError("provider_error")
+                await self.repository.fail(
+                    invocation_id,
+                    provider_error,
+                    self._elapsed_ms(started),
+                    retry_count,
+                    fallback_used,
+                )
+                raise provider_error from error
+        except Exception as error:
+            provider_error = LLMProviderError("provider_error")
+            await self.repository.fail(
+                invocation_id,
+                provider_error,
+                self._elapsed_ms(started),
+                retry_count,
+                fallback_used,
+            )
+            raise provider_error from error
 
         latency_ms = self._elapsed_ms(started)
         await self.repository.complete(
-            invocation_id, result, latency_ms, retry_count, fallback_used
+            invocation_id, result, latency_ms, retry_count, fallback_used, estimated_cost_usd=0
         )
         structured = self._structured_dump(result.text, schema) if schema else None
         return GenerationOutput(
@@ -180,6 +204,7 @@ class GenerationService:
             prompt_name=prompt_name,
             prompt_version=prompt_version,
             usage=result.usage,
+            estimated_cost_usd=0,
             latency_ms=latency_ms,
             retry_count=retry_count,
             fallback_used=fallback_used,
@@ -188,7 +213,7 @@ class GenerationService:
 
     async def stream(
         self, input: GenerationInput, request_id: str
-    ) -> AsyncIterator[LLMStreamChunk]:
+    ) -> AsyncGenerator[LLMStreamChunk, None]:
         model_name = input.model or self.primary_model
         model = self.model_registry.get(model_name)
         prompt_name = input.prompt_name or "direct"
@@ -212,6 +237,7 @@ class GenerationService:
         output = ""
         usage: LLMUsage | None = None
         finish_reason: str | None = None
+        terminal = False
         try:
             async for chunk in self._client_for(model_name).stream(request):
                 output += chunk.text
@@ -221,28 +247,46 @@ class GenerationService:
                     yield chunk
         except asyncio.CancelledError:
             await self.repository.cancel(invocation_id, self._elapsed_ms(started))
+            terminal = True
             raise
         except LLMError as error:
             await self.repository.fail(
                 invocation_id, error, self._elapsed_ms(started), 0, fallback_used=False
             )
+            terminal = True
             raise
-
-        result = LLMResult(
-            text=output,
-            provider=model.provider,
-            model=model.model,
-            usage=usage or LLMUsage(input_tokens=0, output_tokens=0, total_tokens=0),
-            finish_reason=finish_reason,
-        )
-        await self.repository.complete(
-            invocation_id, result, self._elapsed_ms(started), 0, fallback_used=False
-        )
-        yield LLMStreamChunk(
-            finish_reason=finish_reason,
-            usage=result.usage,
-            invocation_id=invocation_id,
-        )
+        except Exception as error:
+            provider_error = LLMProviderError("provider_error")
+            await self.repository.fail(
+                invocation_id, provider_error, self._elapsed_ms(started), 0, fallback_used=False
+            )
+            terminal = True
+            raise provider_error from error
+        else:
+            result = LLMResult(
+                text=output,
+                provider=model.provider,
+                model=model.model,
+                usage=usage or LLMUsage(input_tokens=0, output_tokens=0, total_tokens=0),
+                finish_reason=finish_reason,
+            )
+            await self.repository.complete(
+                invocation_id,
+                result,
+                self._elapsed_ms(started),
+                0,
+                fallback_used=False,
+                estimated_cost_usd=0,
+            )
+            terminal = True
+            yield LLMStreamChunk(
+                finish_reason=finish_reason,
+                usage=result.usage,
+                invocation_id=invocation_id,
+            )
+        finally:
+            if not terminal:
+                await self.repository.cancel(invocation_id, self._elapsed_ms(started))
 
     async def _generate_with_retries(
         self, client: LLMClient, request: LLMRequest
@@ -253,6 +297,7 @@ class GenerationService:
                 return await client.generate(request), retry_count
             except LLMError as error:
                 if not error.retryable or retry_count >= self.max_retries:
+                    error.retry_count = retry_count
                     raise
                 retry_count += 1
                 await asyncio.sleep(0)

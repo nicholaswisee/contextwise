@@ -2,6 +2,10 @@ class LLMError(Exception):
     code = "provider_error"
     retryable = False
 
+    def __init__(self, message: str):
+        super().__init__(message)
+        self.retry_count = 0
+
 
 class LLMTimeoutError(LLMError):
     code = "timeout"

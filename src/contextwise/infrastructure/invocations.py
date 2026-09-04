@@ -40,6 +40,7 @@ class InvocationRepository:
         latency_ms: int,
         retry_count: int,
         fallback_used: bool,
+        estimated_cost_usd: float,
     ) -> None:
         async with self.session_factory.begin() as session:
             invocation = await self._get_required(session, invocation_id)
@@ -51,6 +52,7 @@ class InvocationRepository:
             invocation.input_tokens = result.usage.input_tokens
             invocation.output_tokens = result.usage.output_tokens
             invocation.total_tokens = result.usage.total_tokens
+            invocation.estimated_cost_usd = estimated_cost_usd
             invocation.finish_reason = result.finish_reason
             invocation.retry_count = retry_count
             invocation.fallback_used = fallback_used

@@ -2,7 +2,11 @@ import asyncio
 
 import pytest
 
-from contextwise.application.llm.errors import LLMStructuredOutputError, LLMTimeoutError
+from contextwise.application.llm.errors import (
+    LLMProviderError,
+    LLMStructuredOutputError,
+    LLMTimeoutError,
+)
 from contextwise.application.llm.fake_client import FakeLLMClient
 from contextwise.application.llm.generation_service import GenerationInput, GenerationService
 from contextwise.application.llm.model_registry import ModelRegistry
@@ -22,8 +26,12 @@ class FakeInvocationRepository:
         self.started.append(kwargs)
         return "invocation-1"
 
-    async def complete(self, invocation_id, result, latency_ms, retry_count, fallback_used):
-        self.completed.append((invocation_id, result, retry_count, fallback_used))
+    async def complete(
+        self, invocation_id, result, latency_ms, retry_count, fallback_used, estimated_cost_usd
+    ):
+        self.completed.append(
+            (invocation_id, result, retry_count, fallback_used, estimated_cost_usd)
+        )
 
     async def fail(self, invocation_id, error, latency_ms, retry_count, fallback_used):
         self.failed.append((invocation_id, error, retry_count, fallback_used))
@@ -82,12 +90,14 @@ async def test_generate_retries_timeout_before_succeeding():
 
 @pytest.mark.asyncio
 async def test_generate_discloses_fallback_after_retryable_primary_failure():
-    primary = FakeLLMClient(failures=(LLMTimeoutError("timeout"),))
+    primary = FakeLLMClient(
+        failures=(LLMTimeoutError("timeout first"), LLMTimeoutError("timeout second"))
+    )
     fallback = FakeLLMClient(text="fallback answer")
     gateway = service(
         primary,
         fallback,
-        llm_max_retries=0,
+        llm_max_retries=1,
         llm_fallback_model="fake-fallback",
         llm_models_json=(
             '[{"name":"fake-fallback","provider":"fake","model":"fake-fallback",'
@@ -100,6 +110,7 @@ async def test_generate_discloses_fallback_after_retryable_primary_failure():
     assert result.text == "fallback answer"
     assert result.fallback_used is True
     assert result.model == "fake-fallback"
+    assert result.retry_count == 1
 
 
 @pytest.mark.asyncio
@@ -169,3 +180,31 @@ async def test_stream_marks_invocation_cancelled_when_consumer_is_cancelled():
         await next_chunk
 
     assert gateway.repository.cancelled[0][0] == "invocation-1"
+
+
+@pytest.mark.asyncio
+async def test_stream_marks_invocation_cancelled_when_consumer_closes_generator():
+    gateway = service(FakeLLMClient(stream_chunks=("partial", "remaining")))
+    stream = gateway.stream(GenerationInput(prompt="hello"), request_id="request-1")
+
+    assert (await anext(stream)).text == "partial"
+    await stream.aclose()
+
+    assert gateway.repository.cancelled[0][0] == "invocation-1"
+
+
+@pytest.mark.asyncio
+async def test_generate_persists_unexpected_provider_failure():
+    class BrokenClient:
+        async def generate(self, request):
+            raise RuntimeError("unexpected response shape")
+
+        async def stream(self, request):
+            yield None
+
+    gateway = service(BrokenClient())
+
+    with pytest.raises(LLMProviderError, match="provider_error"):
+        await gateway.generate(GenerationInput(prompt="hello"), request_id="request-1")
+
+    assert gateway.repository.failed[0][1].code == "provider_error"

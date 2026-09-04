@@ -43,6 +43,7 @@ async def test_repository_persists_completed_invocation(repository):
         latency_ms=12,
         retry_count=1,
         fallback_used=False,
+        estimated_cost_usd=0,
     )
 
     invocation = await repository.get(invocation_id)
@@ -51,6 +52,7 @@ async def test_repository_persists_completed_invocation(repository):
     assert invocation.status == "completed"
     assert invocation.total_tokens == 3
     assert invocation.latency_ms == 12
+    assert invocation.estimated_cost_usd == 0
     assert invocation.completed_at is not None
 
 

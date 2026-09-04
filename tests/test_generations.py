@@ -33,6 +33,7 @@ async def test_generate_returns_fake_provider_result_and_invocation(app_with_db)
     assert invocation.status_code == 200
     assert invocation.json()["status"] == "completed"
     assert invocation.json()["provider"] == "fake"
+    assert invocation.json()["estimated_cost_usd"] == 0
 
 
 @pytest.mark.asyncio
@@ -71,6 +72,19 @@ async def test_stream_emits_chunks_and_completion_event(app_with_db):
     assert response.status_code == 200
     assert 'data: {"type": "chunk", "text": "Hello from fake provider."}' in response.text
     assert 'data: {"type": "completed", "invocation_id":' in response.text
+
+
+@pytest.mark.asyncio
+async def test_stream_rejects_structured_output_until_stream_validation_exists(app_with_db):
+    async with AsyncClient(
+        transport=ASGITransport(app=app_with_db), base_url="http://test"
+    ) as client:
+        response = await client.post(
+            "/v1/generations/stream", json={"prompt": "hello", "response_schema": "answer"}
+        )
+
+    assert response.status_code == 422
+    assert response.json()["detail"] == "structured streaming is not supported"
 
 
 @pytest.mark.asyncio

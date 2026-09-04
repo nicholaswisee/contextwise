@@ -37,9 +37,13 @@ async def stream(
     request: Request,
     service: Annotated[GenerationService, Depends(get_generation_service)],
 ) -> StreamingResponse:
+    if input.response_schema:
+        raise HTTPException(status_code=422, detail="structured streaming is not supported")
+
     async def events() -> AsyncIterator[str]:
+        stream = service.stream(input, request.state.request_id)
         try:
-            async for chunk in service.stream(input, request.state.request_id):
+            async for chunk in stream:
                 if await request.is_disconnected():
                     break
                 if chunk.invocation_id:
@@ -51,5 +55,7 @@ async def stream(
             raise
         except LLMError as error:
             yield f"data: {json.dumps({'type': 'error', 'code': error.code})}\n\n"
+        finally:
+            await stream.aclose()
 
     return StreamingResponse(events(), media_type="text/event-stream")
