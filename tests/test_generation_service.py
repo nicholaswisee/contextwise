@@ -208,3 +208,31 @@ async def test_generate_persists_unexpected_provider_failure():
         await gateway.generate(GenerationInput(prompt="hello"), request_id="request-1")
 
     assert gateway.repository.failed[0][1].code == "provider_error"
+
+
+@pytest.mark.asyncio
+async def test_generate_marks_real_provider_cost_as_unknown():
+    configured_settings = settings(
+        llm_primary_model="provider-test",
+        llm_models_json=(
+            '[{"name":"provider-test","provider":"openai","model":"openai/gpt-test",'
+            '"capabilities":["text","structured","stream"]}]'
+        ),
+    )
+    repository = FakeInvocationRepository()
+    gateway = GenerationService(
+        model_registry=ModelRegistry.from_settings(configured_settings),
+        prompt_registry=PromptRegistry(),
+        schema_registry=SchemaRegistry(),
+        clients={"provider-test": FakeLLMClient(provider="openai")},
+        repository=repository,
+        max_retries=0,
+        structured_repair_attempts=0,
+        fallback_model=None,
+        primary_model="provider-test",
+    )
+
+    result = await gateway.generate(GenerationInput(prompt="hello"), request_id="request-1")
+
+    assert result.estimated_cost_usd is None
+    assert repository.completed[0][4] is None

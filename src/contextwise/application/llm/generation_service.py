@@ -36,7 +36,7 @@ class InvocationStore(Protocol):
         latency_ms: int,
         retry_count: int,
         fallback_used: bool,
-        estimated_cost_usd: float,
+        estimated_cost_usd: float | None,
     ) -> None: ...
 
     async def fail(
@@ -70,7 +70,7 @@ class GenerationOutput(BaseModel):
     prompt_name: str | None
     prompt_version: int | None
     usage: LLMUsage
-    estimated_cost_usd: float
+    estimated_cost_usd: float | None
     latency_ms: int
     retry_count: int
     fallback_used: bool
@@ -191,8 +191,9 @@ class GenerationService:
             raise provider_error from error
 
         latency_ms = self._elapsed_ms(started)
+        estimated_cost_usd = self._estimated_cost(result.provider)
         await self.repository.complete(
-            invocation_id, result, latency_ms, retry_count, fallback_used, estimated_cost_usd=0
+            invocation_id, result, latency_ms, retry_count, fallback_used, estimated_cost_usd
         )
         structured = self._structured_dump(result.text, schema) if schema else None
         return GenerationOutput(
@@ -204,7 +205,7 @@ class GenerationService:
             prompt_name=prompt_name,
             prompt_version=prompt_version,
             usage=result.usage,
-            estimated_cost_usd=0,
+            estimated_cost_usd=estimated_cost_usd,
             latency_ms=latency_ms,
             retry_count=retry_count,
             fallback_used=fallback_used,
@@ -276,7 +277,7 @@ class GenerationService:
                 self._elapsed_ms(started),
                 0,
                 fallback_used=False,
-                estimated_cost_usd=0,
+                estimated_cost_usd=self._estimated_cost(result.provider),
             )
             terminal = True
             yield LLMStreamChunk(
@@ -343,3 +344,7 @@ class GenerationService:
     @staticmethod
     def _elapsed_ms(started: float) -> int:
         return round((perf_counter() - started) * 1000)
+
+    @staticmethod
+    def _estimated_cost(provider: str) -> float | None:
+        return 0 if provider == "fake" else None

@@ -40,7 +40,7 @@ class InvocationRepository:
         latency_ms: int,
         retry_count: int,
         fallback_used: bool,
-        estimated_cost_usd: float,
+        estimated_cost_usd: float | None,
     ) -> None:
         async with self.session_factory.begin() as session:
             invocation = await self._get_required(session, invocation_id)
