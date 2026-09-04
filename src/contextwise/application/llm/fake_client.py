@@ -12,12 +12,14 @@ class FakeLLMClient:
         text: str = "Hello from fake provider.",
         structured_json: str | None = None,
         stream_chunks: tuple[str, ...] | None = None,
+        stream_failure: LLMError | None = None,
         failures: tuple[LLMError, ...] = (),
     ):
         self.provider = provider
         self.text = text
         self.structured_json = structured_json
         self.stream_chunks = stream_chunks or (text,)
+        self.stream_failure = stream_failure
         self.failures = list(failures)
         self.calls: list[LLMRequest] = []
 
@@ -36,8 +38,10 @@ class FakeLLMClient:
     async def stream(self, request: LLMRequest) -> AsyncIterator[LLMStreamChunk]:
         self.calls.append(request)
         self._raise_next_failure()
-        for text in self.stream_chunks:
+        for index, text in enumerate(self.stream_chunks, start=1):
             yield LLMStreamChunk(text=text)
+            if self.stream_failure and index == 1:
+                raise self.stream_failure
         yield LLMStreamChunk(
             finish_reason="stop",
             usage=self._usage(request, "".join(self.stream_chunks)),

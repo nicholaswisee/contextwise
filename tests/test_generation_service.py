@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 
 from contextwise.application.llm.errors import LLMStructuredOutputError, LLMTimeoutError
@@ -14,6 +16,7 @@ class FakeInvocationRepository:
         self.started = []
         self.completed = []
         self.failed = []
+        self.cancelled = []
 
     async def create_started(self, **kwargs):
         self.started.append(kwargs)
@@ -24,6 +27,9 @@ class FakeInvocationRepository:
 
     async def fail(self, invocation_id, error, latency_ms, retry_count, fallback_used):
         self.failed.append((invocation_id, error, retry_count, fallback_used))
+
+    async def cancel(self, invocation_id, latency_ms):
+        self.cancelled.append((invocation_id, latency_ms))
 
 
 def settings(**values):
@@ -122,3 +128,46 @@ async def test_stream_forwards_chunks_and_persists_completion():
     assert [chunk.text for chunk in chunks] == ["one ", "two", ""]
     assert chunks[-1].invocation_id == "invocation-1"
     assert gateway.repository.completed[0][0] == "invocation-1"
+
+
+@pytest.mark.asyncio
+async def test_stream_persists_partial_upstream_failure():
+    gateway = service(
+        FakeLLMClient(
+            stream_chunks=("partial",), stream_failure=LLMTimeoutError("stream timed out")
+        )
+    )
+
+    stream = gateway.stream(GenerationInput(prompt="hello"), request_id="request-1")
+
+    assert (await anext(stream)).text == "partial"
+    with pytest.raises(LLMTimeoutError, match="stream timed out"):
+        await anext(stream)
+
+    assert gateway.repository.failed[0][1].code == "timeout"
+
+
+@pytest.mark.asyncio
+async def test_stream_marks_invocation_cancelled_when_consumer_is_cancelled():
+    started = asyncio.Event()
+    release = asyncio.Event()
+
+    class BlockingClient:
+        async def generate(self, request):
+            raise AssertionError("generate is not used for streaming")
+
+        async def stream(self, request):
+            started.set()
+            await release.wait()
+            yield None
+
+    gateway = service(BlockingClient())
+    stream = gateway.stream(GenerationInput(prompt="hello"), request_id="request-1")
+    next_chunk = asyncio.create_task(anext(stream))
+
+    await started.wait()
+    next_chunk.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await next_chunk
+
+    assert gateway.repository.cancelled[0][0] == "invocation-1"
