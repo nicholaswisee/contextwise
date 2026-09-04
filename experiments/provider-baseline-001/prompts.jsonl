@@ -1,0 +1,30 @@
+{"id":"text-01","prompt":"Say hello in five words."}
+{"id":"text-02","prompt":"Explain dependency injection briefly."}
+{"id":"text-03","prompt":"Name one FastAPI benefit."}
+{"id":"text-04","prompt":"Describe an async function."}
+{"id":"text-05","prompt":"What is a health endpoint?"}
+{"id":"text-06","prompt":"State one database migration rule."}
+{"id":"text-07","prompt":"Define structured output."}
+{"id":"text-08","prompt":"What is a retry?"}
+{"id":"text-09","prompt":"What does fallback mean?"}
+{"id":"text-10","prompt":"What is SSE?"}
+{"id":"text-11","prompt":"Explain a request ID."}
+{"id":"text-12","prompt":"Why validate configuration?"}
+{"id":"text-13","prompt":"What is an LLM client?"}
+{"id":"text-14","prompt":"Define provider neutrality."}
+{"id":"text-15","prompt":"Describe cancellation."}
+{"id":"text-16","prompt":"What is a timeout?"}
+{"id":"text-17","prompt":"What is a rate limit?"}
+{"id":"text-18","prompt":"What is a prompt version?"}
+{"id":"text-19","prompt":"What is invocation persistence?"}
+{"id":"text-20","prompt":"Why redact provider errors?"}
+{"id":"structured-01","prompt":"Return an answer object.","response_schema":"answer"}
+{"id":"structured-02","prompt":"Return a typed answer.","response_schema":"answer"}
+{"id":"structured-03","prompt":"Respond with one answer field.","response_schema":"answer"}
+{"id":"structured-04","prompt":"Produce a JSON answer.","response_schema":"answer"}
+{"id":"structured-05","prompt":"Use the registered answer schema.","response_schema":"answer"}
+{"id":"structured-06","prompt":"Give a validated response.","response_schema":"answer"}
+{"id":"structured-07","prompt":"Create an answer result.","response_schema":"answer"}
+{"id":"structured-08","prompt":"Use typed output.","response_schema":"answer"}
+{"id":"structured-09","prompt":"Respond using JSON.","response_schema":"answer"}
+{"id":"structured-10","prompt":"Return a concise answer.","response_schema":"answer"}
