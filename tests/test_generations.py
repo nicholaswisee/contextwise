@@ -10,7 +10,8 @@ pytestmark = pytest.mark.integration
 @pytest.fixture
 def app_with_db(monkeypatch, apply_migrations):
     monkeypatch.setenv(
-        "DATABASE_URL", "postgresql+asyncpg://contextwise:contextwise@localhost:5434/contextwise_test"
+        "DATABASE_URL",
+        "postgresql+asyncpg://contextwise:contextwise@localhost:5434/contextwise_test",
     )
     return create_app(Settings())
 

@@ -104,9 +104,7 @@ async def test_generate_discloses_fallback_after_retryable_primary_failure():
 
 @pytest.mark.asyncio
 async def test_generate_rejects_invalid_structured_output_and_persists_failure():
-    gateway = service(
-        FakeLLMClient(structured_json="not json"), llm_structured_repair_attempts=0
-    )
+    gateway = service(FakeLLMClient(structured_json="not json"), llm_structured_repair_attempts=0)
 
     with pytest.raises(LLMStructuredOutputError, match="structured_output_invalid"):
         await gateway.generate(
