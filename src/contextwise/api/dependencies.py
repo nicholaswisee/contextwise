@@ -86,3 +86,11 @@ def get_generation_service() -> GenerationService:
 
 def get_invocation_repository() -> InvocationRepository:
     return get_state().invocation_repository
+
+
+def get_model_registry() -> ModelRegistry:
+    return get_state().model_registry
+
+
+def get_prompt_registry() -> PromptRegistry:
+    return get_state().prompt_registry

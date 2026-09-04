@@ -43,6 +43,7 @@ class LLMStreamChunk(BaseModel):
     text: str = ""
     finish_reason: str | None = None
     usage: LLMUsage | None = None
+    invocation_id: str | None = None
 
 
 class LLMClient(Protocol):

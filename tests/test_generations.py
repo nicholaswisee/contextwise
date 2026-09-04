@@ -58,3 +58,29 @@ async def test_generate_rejects_unknown_model(app_with_db):
 
     assert response.status_code == 422
     assert response.json()["detail"] == "unknown model: missing"
+
+
+@pytest.mark.asyncio
+async def test_stream_emits_chunks_and_completion_event(app_with_db):
+    async with AsyncClient(
+        transport=ASGITransport(app=app_with_db), base_url="http://test"
+    ) as client:
+        response = await client.post("/v1/generations/stream", json={"prompt": "hello"})
+
+    assert response.status_code == 200
+    assert 'data: {"type": "chunk", "text": "Hello from fake provider."}' in response.text
+    assert 'data: {"type": "completed", "invocation_id":' in response.text
+
+
+@pytest.mark.asyncio
+async def test_llm_registries_expose_models_and_prompt_versions(app_with_db):
+    async with AsyncClient(
+        transport=ASGITransport(app=app_with_db), base_url="http://test"
+    ) as client:
+        models = await client.get("/v1/models")
+        prompts = await client.get("/v1/prompts")
+
+    assert models.status_code == 200
+    assert models.json()[0]["name"] == "fake-default"
+    assert prompts.status_code == 200
+    assert prompts.json() == [{"name": "direct", "version": 1}]

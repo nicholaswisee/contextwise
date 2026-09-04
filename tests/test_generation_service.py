@@ -108,3 +108,17 @@ async def test_generate_rejects_invalid_structured_output_and_persists_failure()
         )
 
     assert gateway.repository.failed[0][1].code == "structured_output_invalid"
+
+
+@pytest.mark.asyncio
+async def test_stream_forwards_chunks_and_persists_completion():
+    gateway = service(FakeLLMClient(stream_chunks=("one ", "two")))
+
+    chunks = [
+        chunk
+        async for chunk in gateway.stream(GenerationInput(prompt="hello"), request_id="request-1")
+    ]
+
+    assert [chunk.text for chunk in chunks] == ["one ", "two", ""]
+    assert chunks[-1].invocation_id == "invocation-1"
+    assert gateway.repository.completed[0][0] == "invocation-1"

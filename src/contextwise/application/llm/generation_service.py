@@ -189,9 +189,60 @@ class GenerationService:
     async def stream(
         self, input: GenerationInput, request_id: str
     ) -> AsyncIterator[LLMStreamChunk]:
-        output = await self.generate(input, request_id)
-        yield LLMStreamChunk(text=output.text)
-        yield LLMStreamChunk(finish_reason=output.finish_reason, usage=output.usage)
+        model_name = input.model or self.primary_model
+        model = self.model_registry.get(model_name)
+        prompt_name = input.prompt_name or "direct"
+        prompt, prompt_version = self.prompt_registry.render(
+            prompt_name, input.prompt_version, input.prompt
+        )
+        request = LLMRequest(
+            model=model.model,
+            messages=(LLMMessage(role="user", content=prompt),),
+            temperature=input.temperature,
+            max_tokens=input.max_tokens,
+        )
+        invocation_id = await self.repository.create_started(
+            request_id=request_id,
+            provider=model.provider,
+            model=model.model,
+            prompt_name=prompt_name,
+            prompt_version=prompt_version,
+        )
+        started = perf_counter()
+        output = ""
+        usage: LLMUsage | None = None
+        finish_reason: str | None = None
+        try:
+            async for chunk in self._client_for(model_name).stream(request):
+                output += chunk.text
+                usage = chunk.usage or usage
+                finish_reason = chunk.finish_reason or finish_reason
+                if chunk.text:
+                    yield chunk
+        except asyncio.CancelledError:
+            await self.repository.cancel(invocation_id, self._elapsed_ms(started))
+            raise
+        except LLMError as error:
+            await self.repository.fail(
+                invocation_id, error, self._elapsed_ms(started), 0, fallback_used=False
+            )
+            raise
+
+        result = LLMResult(
+            text=output,
+            provider=model.provider,
+            model=model.model,
+            usage=usage or LLMUsage(input_tokens=0, output_tokens=0, total_tokens=0),
+            finish_reason=finish_reason,
+        )
+        await self.repository.complete(
+            invocation_id, result, self._elapsed_ms(started), 0, fallback_used=False
+        )
+        yield LLMStreamChunk(
+            finish_reason=finish_reason,
+            usage=result.usage,
+            invocation_id=invocation_id,
+        )
 
     async def _generate_with_retries(
         self, client: LLMClient, request: LLMRequest
