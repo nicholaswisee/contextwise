@@ -13,14 +13,13 @@
 
 ## Milestone 1 — LLM Gateway and Typed Generation
 
-- [ ] User story demonstrated
-- [ ] Required deliverables complete
-- [ ] Deterministic tests pass
-- [ ] Behavioral evaluation stored
+- [x] User story demonstrated
+- [x] Required deliverables complete
+- [x] Deterministic tests pass
+- [x] Behavioral evaluation stored
 - [ ] Security/privacy review complete
-- [ ] Learning note complete
-- [ ] Retrospective complete
-- [ ] Release tagged
+- [x] Learning note complete
+- [x] Retrospective complete
 - [ ] Exit gate: PASS
 
 ## Milestone 2 — Contextwise Core Assistant

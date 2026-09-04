@@ -34,7 +34,7 @@ migrate:
 	uv run alembic upgrade head
 
 up:
-	docker compose up -d --wait
+	docker compose up -d --wait --build
 
 down:
 	docker compose down
