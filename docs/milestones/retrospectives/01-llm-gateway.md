@@ -45,7 +45,7 @@ Provider error content is reduced to internal error codes in HTTP responses and 
 
 - Invocation records expose status, latency, tokens, zero fake-provider cost, retry count, fallback use, and finish reason.
 - The deterministic fake baseline contains no provider credentials or raw prompt persistence.
-- Real-provider latency, cost, and time-to-first-token measurements require explicit credentials.
+- The comparison runner now supports two explicitly registered real-provider models without overwriting the fake baseline. Real-provider latency, quality, cost, and time-to-first-token measurements still require an explicit credentialed run; cost and TTFT are not currently produced by the runner.
 
 ## 8. Demonstration
 
@@ -53,7 +53,7 @@ See [`docs/demos/01-llm-gateway-demo.md`](../../demos/01-llm-gateway-demo.md) an
 
 ## 9. Deferred Work
 
-- Run the same frozen prompts against two explicitly configured providers.
+- Execute the new two-model comparison runner with an operator-supplied OpenRouter credential and retain the result as a separate artifact.
 - Add provider-specific cost reconciliation.
 - Add a full security review and remote CI evidence.
 
@@ -61,4 +61,4 @@ See [`docs/demos/01-llm-gateway-demo.md`](../../demos/01-llm-gateway-demo.md) an
 
 `PASS WITH DOCUMENTED DEBT`
 
-The deterministic gateway is implemented and locally verified. The exit gate remains open for real-provider comparison, remote CI evidence, and the full security review.
+The deterministic gateway and credential-safe comparison plumbing are locally verified. The exit gate remains open for credentialed real-provider measurements, paired evaluation, remote CI evidence, and the full security review.

@@ -76,8 +76,8 @@ At the end, you should be able to explain these topics without relying on framew
 ### 6.4 Behavioral Evaluation and Measurement
 
 - [x] Create a frozen 30-prompt dataset.
-- [ ] Compare two model/provider configurations on quality, time to first token, total latency, valid structured-output rate, tokens, and cost.
-- [ ] Compare free-form JSON prompting with schema-constrained output.
+- [ ] Compare two model/provider configurations on quality, time to first token, total latency, valid structured-output rate, tokens, and cost. The credential-safe comparison runner is implemented; measured evidence remains pending.
+- [ ] Compare free-form JSON prompting with schema-constrained output. The current frozen cases are not paired for this comparison.
 
 ### 6.5 Documentation and Cleanup
 
@@ -161,6 +161,6 @@ Before starting Milestone 2, verify:
 - [ ] Security and privacy review is complete.
 - [ ] The learning note and retrospective are committed.
 
-**Decision:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN` — deterministic provider contracts, persistence, streaming, and the 30-case fake baseline are complete. Real-provider comparison, remote CI evidence, the full security review, and committing the evidence artifacts remain outstanding; release tagging is not required.
+**Decision:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN` — deterministic provider contracts, persistence, streaming, the 30-case fake baseline, and credential-safe comparison plumbing are complete. Credentialed real-provider measurement, paired quality/TTFT/cost evaluation, remote CI evidence, the full security review, and committing real-provider evidence remain outstanding; release tagging is not required.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.

@@ -23,3 +23,5 @@ Contextwise now has a provider-neutral `LLMClient` boundary, deterministic fake 
 - Structured streaming is intentionally rejected until it can validate the final response.
 - Streaming fallback policy is intentionally not implemented; fallback occurs before a stream begins.
 - Cost estimates are persisted as `0` for fake results until provider-specific pricing reconciliation is added.
+- The provider comparison runner belongs at the experiment composition boundary so the application layer remains independent of LiteLLM.
+- A comparison artifact can safely record requested and returned model metadata, token counts, latency, and validation status without recording prompts, responses, or credentials.
