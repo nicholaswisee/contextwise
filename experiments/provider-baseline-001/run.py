@@ -1,82 +1,102 @@
 import asyncio
 import json
+import os
 from pathlib import Path
-from time import perf_counter
 
+from runner import BaselineRunConfig, run_cases
+
+from contextwise.application.llm.contracts import LLMResult
+from contextwise.application.llm.errors import LLMError
 from contextwise.application.llm.fake_client import FakeLLMClient
-from contextwise.application.llm.generation_service import GenerationInput, GenerationService
+from contextwise.application.llm.generation_service import GenerationService
 from contextwise.application.llm.model_registry import ModelRegistry
 from contextwise.application.llm.prompt_registry import PromptRegistry
 from contextwise.application.llm.schema_registry import SchemaRegistry
 from contextwise.config import Settings
+from contextwise.infrastructure.llm.litellm_client import LiteLLMClient
 
 
 class MemoryInvocationRepository:
     def __init__(self) -> None:
         self.count = 0
 
-    async def create_started(self, **kwargs: object) -> str:
+    async def create_started(
+        self,
+        request_id: str,
+        provider: str,
+        model: str,
+        prompt_name: str | None,
+        prompt_version: int | None,
+    ) -> str:
         self.count += 1
         return f"evaluation-{self.count}"
 
-    async def complete(self, *args: object, **kwargs: object) -> None:
+    async def complete(
+        self,
+        invocation_id: str,
+        result: LLMResult,
+        latency_ms: int,
+        retry_count: int,
+        fallback_used: bool,
+        estimated_cost_usd: float | None,
+    ) -> None:
         return None
 
-    async def fail(self, *args: object, **kwargs: object) -> None:
+    async def fail(
+        self,
+        invocation_id: str,
+        error: LLMError,
+        latency_ms: int,
+        retry_count: int,
+        fallback_used: bool,
+    ) -> None:
         return None
 
-    async def cancel(self, *args: object, **kwargs: object) -> None:
+    async def cancel(self, invocation_id: str, latency_ms: int) -> None:
         return None
+
+
+def _settings() -> Settings:
+    return Settings(
+        _env_file=None,
+        DATABASE_URL="postgresql+asyncpg://contextwise:contextwise@localhost/contextwise",
+    )
+
+
+def _cases(path: Path) -> list[dict[str, object]]:
+    return [json.loads(line) for line in path.read_text().splitlines()]
 
 
 async def run() -> None:
     directory = Path(__file__).parent
-    settings = Settings(
-        _env_file=None,
-        DATABASE_URL="postgresql+asyncpg://contextwise:contextwise@localhost/contextwise",
-    )
+    settings = _settings()
     registry = ModelRegistry.from_settings(settings)
+    mode = os.environ.get("M1_BASELINE_MODE", "fake")
+    model_names = tuple(
+        name.strip() for name in os.environ.get("M1_BASELINE_MODELS", "").split(",") if name.strip()
+    )
+    config = BaselineRunConfig.from_environment(directory, mode, model_names)
+    config.validate(registry)
+
+    clients = {}
+    for model in registry.list():
+        clients[model.name] = (
+            FakeLLMClient()
+            if model.provider == "fake"
+            else LiteLLMClient(model.provider, settings.llm_timeout_seconds)
+        )
     service = GenerationService(
         model_registry=registry,
         prompt_registry=PromptRegistry(),
         schema_registry=SchemaRegistry(),
-        clients={"fake-default": FakeLLMClient()},
+        clients=clients,
         repository=MemoryInvocationRepository(),
-        max_retries=0,
-        structured_repair_attempts=0,
+        max_retries=settings.llm_max_retries,
+        structured_repair_attempts=settings.llm_structured_repair_attempts,
         fallback_model=None,
-        primary_model="fake-default",
+        primary_model=config.model_names[0],
     )
-    results = []
-    for line in (directory / "prompts.jsonl").read_text().splitlines():
-        case = json.loads(line)
-        started = perf_counter()
-        output = await service.generate(
-            GenerationInput(
-                prompt=case["prompt"], response_schema=case.get("response_schema")
-            ),
-            request_id=case["id"],
-        )
-        results.append(
-            {
-                "id": case["id"],
-                "provider": output.provider,
-                "model": output.model,
-                "response_schema": case.get("response_schema"),
-                "structured_valid": output.structured is not None if case.get("response_schema") else None,
-                "total_latency_ms": round((perf_counter() - started) * 1000, 3),
-                "input_tokens": output.usage.input_tokens,
-                "output_tokens": output.usage.output_tokens,
-                "total_tokens": output.usage.total_tokens,
-                "estimated_cost_usd": 0,
-                "retry_count": output.retry_count,
-                "fallback_used": output.fallback_used,
-                "status": "completed",
-            }
-        )
-    (directory / "results.jsonl").write_text(
-        "".join(f"{json.dumps(result)}\n" for result in results)
-    )
+    await run_cases(config, registry, service, _cases(directory / "prompts.jsonl"))
 
 
 if __name__ == "__main__":
