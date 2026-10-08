@@ -17,9 +17,9 @@ A production-grade, context-aware personal AI workspace — built as a solo lear
 
 ## Current Status
 
-**Milestone 2 is implemented locally.** The assistant demo, tests, and context
-evaluation pass. Its release gate remains open until committed evidence, remote
-CI, and the required tag are verified. Milestones 0 and 1 retain their
+**Milestone 2 passed with documented predecessor debt.** The assistant demo,
+tests, evaluation, and remote CI pass, and `contextwise-v0.2-assistant` points
+to the checked release commit. Milestones 0 and 1 retain their earlier
 documented gate debt.
 
 ## Getting Started

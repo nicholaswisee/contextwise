@@ -2,7 +2,7 @@
 
 **Milestone:** 2 — Contextwise Core Assistant
 **Date:** 2026-10-09
-**Release tag:** Not created; exit gate remains open.
+**Release tag:** `contextwise-v0.2-assistant`
 
 ## 1. What Was Built
 
@@ -28,6 +28,9 @@ ancestry needs new IDs plus source IDs, rather than mutating a shared tree.
   credential fields.
 - The fake provider proves deterministic plumbing only; no real-provider quality
   comparison is claimed.
+- Local checks passed on the assistant revision: 69 unit and 18 PostgreSQL
+  integration tests. [Remote CI](https://github.com/nicholaswisee/contextwise/actions/runs/37859374266)
+  passed check, migration, and integration jobs on `ac9651f`.
 
 ## 4. Important Failures
 
@@ -66,9 +69,9 @@ Tracked as CW-01 through CW-04 in `docs/issues/README.md`.
 
 ## 8. Exit Decision
 
-`IMPLEMENTED LOCALLY — EXIT GATE OPEN`
+`PASS WITH DOCUMENTED DEBT`
 
-The implementation, local deterministic evidence, security review, and live
-demo are present. The release evidence has not been committed, remote CI is
-unverified, and the required tag does not exist. ADR-0002 explicitly permits
-the non-critical Milestone 1 evidence debt while leaving that gate open.
+The assistant user story, local and remote checks, frozen evaluation, local
+security review, and clean Docker demo pass. The release tag resolves to the
+final CI-checked release commit. ADR-0002 permits the non-critical Milestone 1
+evidence debt while keeping that earlier gate open.

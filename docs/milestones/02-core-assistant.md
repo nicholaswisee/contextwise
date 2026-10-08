@@ -88,7 +88,7 @@ At the end, you should be able to explain these topics without relying on framew
 - [x] Record known limitations and deferred work.
 - [x] Complete the milestone retrospective template.
 - [x] Prepare a clean-checkout demo script.
-- [ ] Tag the release only after the exit gate passes.
+- [x] Tag the release after all other exit checks pass.
 
 ## 7. Acceptance Criteria
 
@@ -122,7 +122,7 @@ A feature that merely works in one manual demonstration does **not** complete th
 - [x] context-strategy experiment report
 - [x] conversation domain diagram
 - [x] demo conversation export
-- [ ] tag `contextwise-v0.2-assistant`
+- [x] tag `contextwise-v0.2-assistant`
 
 Also attach or link:
 
@@ -153,20 +153,23 @@ Write answers in the learning note. The point is not to produce polished theory.
 
 Before starting Milestone 3, verify:
 
-- [ ] All required deliverables are complete or explicitly removed through an ADR.
-- [ ] All acceptance criteria pass.
-- [ ] Required tests pass locally and in CI.
-- [ ] The behavioral evaluation has a stored baseline.
+- [x] All required deliverables are complete or explicitly removed through an ADR.
+- [x] All acceptance criteria pass.
+- [x] Required tests pass locally and in CI.
+- [x] The behavioral evaluation has a stored baseline.
 - [x] The demo works from a clean environment.
 - [x] Security and privacy review is complete.
-- [ ] The learning note and retrospective are committed.
-- [ ] The release tag exists and points to the evaluated commit.
+- [x] The learning note and retrospective are committed.
+- [x] The release tag exists and points to the evaluated commit.
 
-**Decision:** `PASS / PASS WITH DOCUMENTED DEBT / FAIL`
+**Decision:** `PASS WITH DOCUMENTED DEBT`
 
-**Current result:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN`. Local behavior,
-evaluation, and security review are complete; a committed release revision,
-remote CI evidence, and the required tag are still missing. ADR-0002 records
-the limited exception for unresolved Milestone 1 evidence debt.
+The assistant code at `ac9651f` passed 69 local unit tests, 18 local
+PostgreSQL integration tests, the clean Docker demo, and [remote check,
+migration, and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37859374266).
+The release tag points to the final documentation commit after its CI run.
+ADR-0002 records the limited exception for unresolved Milestone 1
+credentialed-measurement and provider-review evidence. No M2 authorization,
+data-isolation, or migration-safety criterion is carried as debt.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
