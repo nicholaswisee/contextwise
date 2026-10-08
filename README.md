@@ -17,16 +17,17 @@ A production-grade, context-aware personal AI workspace — built as a solo lear
 
 ## Current Status
 
-**Milestone 2 passed with documented predecessor debt.** The assistant demo,
-tests, evaluation, and remote CI pass, and `contextwise-v0.2-assistant` points
-to the checked release commit. Milestones 0 and 1 retain their earlier
+**Milestone 2 passed with documented predecessor debt.** Milestone 3's
+document ingestion pipeline is implemented locally; its demo, tests, and
+evaluation fixtures pass, and remote CI passed on its code commit. Its release
+tag and exit decision remain open. Milestones 0 and 1 retain their earlier
 documented gate debt.
 
 ## Getting Started
 
 1. Read [`docs/PROJECT_BRIEF.md`](docs/PROJECT_BRIEF.md) — the product vision and learning goals.
 2. Verify the toolchain against [`docs/PREREQUISITES.md`](docs/PREREQUISITES.md).
-3. Run the [assistant demo](docs/demos/02-core-assistant-demo.md).
+3. Run the [assistant and ingestion smoke demo](docs/demos/03-ingestion-demo.md).
 4. Check the [master checklist](docs/MASTER_CHECKLIST.md) for release-gate status.
 
 ## Toolchain Summary
