@@ -25,7 +25,7 @@ services:
             DEBUG: "false"
             ENVIRONMENT: production
             OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
-            LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-}
+            LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-fake-default}
             LLM_FALLBACK_MODEL: ${LLM_FALLBACK_MODEL:-}
             LLM_MODELS_JSON: ${LLM_MODELS_JSON:-}
             CONTEXTWISE_OWNER_TOKEN: ${CONTEXTWISE_OWNER_TOKEN:?Set CONTEXTWISE_OWNER_TOKEN before starting the API}
