@@ -23,6 +23,15 @@ class Settings(BaseSettings):
     context_budget: int = Field(default=4096, alias="CONTEXTWISE_CONTEXT_BUDGET", gt=0)
     output_reserve: int = Field(default=512, alias="CONTEXTWISE_OUTPUT_RESERVE", ge=0)
     title_model: str | None = Field(default=None, alias="LLM_TITLE_MODEL")
+    document_store_path: str = Field(
+        default="./data/documents", alias="CONTEXTWISE_DOCUMENT_STORE_PATH"
+    )
+    document_max_bytes: int = Field(
+        default=10_485_760, alias="CONTEXTWISE_DOCUMENT_MAX_BYTES", gt=0
+    )
+    ingestion_timeout_seconds: float = Field(
+        default=30, alias="CONTEXTWISE_INGESTION_TIMEOUT_SECONDS", gt=0
+    )
 
     @model_validator(mode="after")
     def require_production_owner_token(self) -> "Settings":

@@ -6,6 +6,7 @@ from fastapi import Header, HTTPException
 
 from contextwise.application.assistant.service import AssistantService
 from contextwise.application.assistant.title_service import TitleService
+from contextwise.application.ingestion.service import IngestionService
 from contextwise.application.llm.fake_client import FakeLLMClient
 from contextwise.application.llm.generation_service import GenerationService
 from contextwise.application.llm.model_registry import ModelRegistry
@@ -14,8 +15,10 @@ from contextwise.application.llm.schema_registry import SchemaRegistry
 from contextwise.config import Settings
 from contextwise.infrastructure.conversations import ConversationRepository
 from contextwise.infrastructure.database import Database
+from contextwise.infrastructure.documents import DocumentRepository
 from contextwise.infrastructure.invocations import InvocationRepository
 from contextwise.infrastructure.llm.litellm_client import LiteLLMClient
+from contextwise.infrastructure.object_store import LocalObjectStore
 
 
 class AppState:
@@ -27,6 +30,13 @@ class AppState:
         self.schema_registry = SchemaRegistry()
         self.invocation_repository = InvocationRepository(self.database.session_factory)
         self.conversation_repository = ConversationRepository(self.database.session_factory)
+        self.document_repository = DocumentRepository(self.database.session_factory)
+        self.ingestion_service = IngestionService(
+            self.document_repository,
+            LocalObjectStore(settings.document_store_path),
+            settings.document_max_bytes,
+            settings.ingestion_timeout_seconds,
+        )
         self.llm_clients = {
             model.name: (
                 FakeLLMClient()
@@ -111,6 +121,10 @@ def get_generation_service() -> GenerationService:
 
 def get_assistant_service() -> AssistantService:
     return get_state().assistant_service
+
+
+def get_ingestion_service() -> IngestionService:
+    return get_state().ingestion_service
 
 
 def get_invocation_repository() -> InvocationRepository:
