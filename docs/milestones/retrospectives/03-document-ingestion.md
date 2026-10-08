@@ -2,7 +2,7 @@
 
 **Milestone:** 3 — Document Ingestion Pipeline
 **Date:** 2026-10-09
-**Release tag:** Not created; exit gate open.
+**Release tag:** `contextwise-v0.3-ingestion`.
 **Commit evaluated:** `c1542df` on `milestone-2-3-continuation`.
 
 ## 1. What Was Built
@@ -46,13 +46,16 @@ work. The object store has no garbage collection or retention API yet.
   hardening and retrieval work.
 - Cloud object storage, cleanup of orphaned objects, and retention controls
   remain follow-up operations work.
-- A release tag and final exit decision are still required to close the gate.
+- The release gate is closed on the evaluated M3 revision. Public upload still
+  requires the PDF process, body-size, and retention follow-ups.
 
 Tracked as CW-05 through CW-08 in `docs/issues/README.md`; release-gate work
 remains on the milestone checklist.
 
 ## 6. Exit Decision
 
-`IMPLEMENTED — EXIT GATE OPEN`. The behavior, deterministic tests, fixture
-baseline, local review, live demo, and remote CI pass. The required release tag
-and final gate decision remain outstanding.
+`PASS WITH DOCUMENTED DEBT`. The behavior, deterministic tests, fixture
+baseline, local review, live demo, and remote CI pass. The tag
+`contextwise-v0.3-ingestion` marks the documentation-only gate closure on top
+of the evaluated revision. The remaining debt is recorded as CW-05 through
+CW-08 and does not weaken local authorization or provenance requirements.

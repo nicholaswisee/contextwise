@@ -92,7 +92,7 @@ At the end, you should be able to explain these topics without relying on framew
 - [x] Record known limitations and deferred work.
 - [x] Complete the milestone retrospective template.
 - [x] Prepare a clean-checkout demo script.
-- [ ] Tag the release only after the exit gate passes.
+- [x] Tag the release only after the exit gate passes.
 
 ## 7. Acceptance Criteria
 
@@ -125,7 +125,7 @@ A feature that merely works in one manual demonstration does **not** complete th
 - [x] parser fixture dataset
 - [x] ingestion state diagram
 - [x] failure matrix
-- [ ] tag `contextwise-v0.3-ingestion`
+- [x] tag `contextwise-v0.3-ingestion`
 
 Also attach or link:
 
@@ -163,14 +163,19 @@ Before starting Milestone 4, verify:
 - [x] The demo works from a clean environment.
 - [x] Security and privacy review is complete for the local single-owner scope.
 - [x] The learning note and retrospective are committed.
-- [ ] The release tag exists and points to the evaluated commit.
+- [x] The release tag exists and points to the evaluated commit.
 
-**Decision:** `IMPLEMENTED — EXIT GATE OPEN`
+**Decision:** `PASS WITH DOCUMENTED DEBT`
 
 The ingestion code at `c1542df` passed 78 local unit tests, 23 local
 PostgreSQL integration tests, the Docker smoke demo, and [remote check,
 migration, and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37859902740).
 The 15-document parser fixture set passed extraction and location checks.
-The release tag and final exit decision remain open.
+The final documentation revision `92fcd61` passed [remote check, migration,
+and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37860031671).
+The release tag points to this documentation-only gate closure on top of that
+evaluated revision. CW-05 through CW-08 remain bounded follow-up work for
+public upload, complex PDFs, and retention; they do not block the local
+single-owner ingestion slice.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
