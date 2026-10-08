@@ -234,6 +234,42 @@ class GenerationService:
             prompt_name=prompt_name,
             prompt_version=prompt_version,
         )
+        request_stream = self._stream_request(model_name, model, request, invocation_id)
+        try:
+            async for chunk in request_stream:
+                yield chunk
+        finally:
+            await request_stream.aclose()
+
+    async def stream_request(
+        self,
+        request: LLMRequest,
+        request_id: str,
+        invocation_id: str | None = None,
+        model_name: str | None = None,
+    ) -> AsyncGenerator[LLMStreamChunk, None]:
+        selected_model_name = model_name or self._model_name_for_request(request.model)
+        model = self.model_registry.get(selected_model_name)
+        selected_invocation_id = invocation_id or await self.repository.create_started(
+            request_id=request_id,
+            provider=model.provider,
+            model=model.model,
+            prompt_name=None,
+            prompt_version=None,
+        )
+        async for chunk in self._stream_request(
+            selected_model_name, model, request, selected_invocation_id
+        ):
+            yield chunk
+
+    async def _stream_request(
+        self,
+        model_name: str,
+        model: object,
+        request: LLMRequest,
+        invocation_id: str,
+    ) -> AsyncGenerator[LLMStreamChunk, None]:
+        registered_model = self.model_registry.get(model_name)
         started = perf_counter()
         output = ""
         usage: LLMUsage | None = None
@@ -266,8 +302,8 @@ class GenerationService:
         else:
             result = LLMResult(
                 text=output,
-                provider=model.provider,
-                model=model.model,
+                provider=registered_model.provider,
+                model=registered_model.model,
                 usage=usage or LLMUsage(input_tokens=0, output_tokens=0, total_tokens=0),
                 finish_reason=finish_reason,
             )
@@ -288,6 +324,12 @@ class GenerationService:
         finally:
             if not terminal:
                 await self.repository.cancel(invocation_id, self._elapsed_ms(started))
+
+    def _model_name_for_request(self, request_model: str) -> str:
+        for model in self.model_registry.list():
+            if model.name == request_model or model.model == request_model:
+                return model.name
+        raise KeyError(f"unknown model: {request_model}")
 
     async def _generate_with_retries(
         self, client: LLMClient, request: LLMRequest

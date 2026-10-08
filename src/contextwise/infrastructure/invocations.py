@@ -1,3 +1,4 @@
+from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime
 from uuid import uuid4
 
@@ -19,6 +20,10 @@ class InvocationRepository:
         model: str,
         prompt_name: str | None,
         prompt_version: int | None,
+        conversation_id: str | None = None,
+        assistant_message_id: str | None = None,
+        context_snapshot: Mapping[str, object] | None = None,
+        selected_message_ids: Sequence[str] = (),
     ) -> str:
         invocation = ModelInvocation(
             id=str(uuid4()),
@@ -28,10 +33,29 @@ class InvocationRepository:
             prompt_name=prompt_name,
             prompt_version=prompt_version,
             status="started",
+            conversation_id=conversation_id,
+            assistant_message_id=assistant_message_id,
+            context_snapshot=dict(context_snapshot) if context_snapshot is not None else None,
+            selected_message_ids=list(selected_message_ids),
         )
         async with self.session_factory.begin() as session:
             session.add(invocation)
         return invocation.id
+
+    async def save_context_snapshot(
+        self,
+        invocation_id: str,
+        conversation_id: str,
+        assistant_message_id: str,
+        context_snapshot: Mapping[str, object],
+        selected_message_ids: Sequence[str],
+    ) -> None:
+        async with self.session_factory.begin() as session:
+            invocation = await self._get_required(session, invocation_id)
+            invocation.conversation_id = conversation_id
+            invocation.assistant_message_id = assistant_message_id
+            invocation.context_snapshot = dict(context_snapshot)
+            invocation.selected_message_ids = list(selected_message_ids)
 
     async def complete(
         self,

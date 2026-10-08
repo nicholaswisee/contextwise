@@ -3,11 +3,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from contextwise.api.dependencies import get_model_registry, get_prompt_registry
+from contextwise.api.dependencies import get_model_registry, get_prompt_registry, require_owner
 from contextwise.application.llm.model_registry import ModelRegistry
 from contextwise.application.llm.prompt_registry import PromptRegistry
 
-router = APIRouter(prefix="/v1", tags=["llm-registry"])
+router = APIRouter(prefix="/v1", tags=["llm-registry"], dependencies=[Depends(require_owner)])
 
 
 class ModelResponse(BaseModel):

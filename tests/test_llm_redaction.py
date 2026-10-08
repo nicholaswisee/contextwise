@@ -21,7 +21,11 @@ async def test_generation_error_response_redacts_provider_secret(monkeypatch):
     from httpx import ASGITransport, AsyncClient
 
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
-        response = await client.post("/v1/generations", json={"prompt": "hello"})
+        response = await client.post(
+            "/v1/generations",
+            json={"prompt": "hello"},
+            headers={"X-Contextwise-Owner": "local-development-token"},
+        )
 
     assert response.status_code == 502
     assert response.json() == {"detail": "provider_error"}

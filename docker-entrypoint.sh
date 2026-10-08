@@ -2,6 +2,6 @@
 set -e
 
 echo "Running database migrations..."
-uv run alembic upgrade head
+uv run --no-dev alembic upgrade head
 
 exec "$@"

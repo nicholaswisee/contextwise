@@ -31,73 +31,73 @@ At the end, you should be able to explain these topics without relying on framew
 
 ## 5. Required Deliverables
 
-- [ ] conversation and message APIs
-- [ ] streaming chat
-- [ ] conversation list and retrieval
-- [ ] response regeneration
-- [ ] conversation branching
-- [ ] model switching
-- [ ] system prompt registry
-- [ ] context builder with token budgeting
-- [ ] conversation title generation
-- [ ] multimodal-ready message schema
+- [x] conversation and message APIs
+- [x] streaming chat
+- [x] conversation list and retrieval
+- [x] response regeneration
+- [x] conversation branching
+- [x] model switching
+- [x] system prompt registry
+- [x] context builder with token budgeting
+- [x] conversation title generation
+- [x] multimodal-ready message schema
 
 ## 6. Task Checklist
 
 ### 6.1 Design Before Coding
 
-- [ ] Define conversation, message, branch, and generation ownership.
-- [ ] Specify the ordering and precedence of system, developer, user, memory, and evidence context.
-- [ ] Define token-budget allocation rules.
-- [ ] Specify idempotency behavior for streamed requests.
-- [ ] Decide what debug context is safe to expose.
+- [x] Define conversation, message, branch, and generation ownership.
+- [x] Specify the ordering and precedence of system, developer, user, memory, and evidence context.
+- [x] Define token-budget allocation rules.
+- [x] Specify idempotency behavior for streamed requests.
+- [x] Decide what debug context is safe to expose.
 
 ### 6.2 Implementation
 
-- [ ] Implement `ConversationService`.
-- [ ] Implement message persistence and ordering.
-- [ ] Implement `ContextBuilder` with deterministic token budgeting.
-- [ ] Store prompt version and selected message IDs on every invocation.
-- [ ] Add regenerate behavior without mutating the original answer.
-- [ ] Add branch creation from an earlier message.
-- [ ] Add model selection and simple task-based defaults.
-- [ ] Generate titles asynchronously or with a lower-cost model.
-- [ ] Define image/file message parts without yet implementing full ingestion.
+- [x] Implement `ConversationService`.
+- [x] Implement message persistence and ordering.
+- [x] Implement `ContextBuilder` with deterministic token budgeting.
+- [x] Store prompt version and selected message IDs on every invocation.
+- [x] Add regenerate behavior without mutating the original answer.
+- [x] Add branch creation from an earlier message.
+- [x] Add model selection and simple task-based defaults.
+- [x] Generate titles asynchronously or with a lower-cost model.
+- [x] Define image/file message parts without yet implementing full ingestion.
 
 ### 6.3 Deterministic and Integration Tests
 
-- [ ] Test message ordering and branch ancestry.
-- [ ] Test context truncation at boundary conditions.
-- [ ] Test duplicate client retries with idempotency keys.
-- [ ] Test partial stream failure without duplicate assistant messages.
-- [ ] Test prompt-version persistence.
-- [ ] Test unauthorized conversation access.
+- [x] Test message ordering and branch ancestry.
+- [x] Test context truncation at boundary conditions.
+- [x] Test duplicate client retries with idempotency keys.
+- [x] Test partial stream failure without duplicate assistant messages.
+- [x] Test prompt-version persistence.
+- [x] Test unauthorized conversation access.
 
 ### 6.4 Behavioral Evaluation and Measurement
 
-- [ ] Create 20 multi-turn cases with pronouns, corrections, and conflicting instructions.
-- [ ] Compare full transcript, sliding window, and summary memory.
-- [ ] Measure quality, tokens, latency, and context-overflow rate.
+- [x] Create 20 multi-turn cases with pronouns, corrections, and conflicting instructions.
+- [x] Compare full transcript, sliding window, and summary memory.
+- [x] Measure quality, tokens, latency, and context-overflow rate.
 
 ### 6.5 Documentation and Cleanup
 
-- [ ] Update the architecture diagram if boundaries changed.
-- [ ] Add or revise Architecture Decision Records for consequential choices.
-- [ ] Update API or CLI documentation.
-- [ ] Add a migration or upgrade note when persistent data changed.
-- [ ] Record known limitations and deferred work.
-- [ ] Complete the milestone retrospective template.
-- [ ] Prepare a clean-checkout demo script.
+- [x] Update the architecture diagram if boundaries changed.
+- [x] Add or revise Architecture Decision Records for consequential choices.
+- [x] Update API or CLI documentation.
+- [x] Add a migration or upgrade note when persistent data changed.
+- [x] Record known limitations and deferred work.
+- [x] Complete the milestone retrospective template.
+- [x] Prepare a clean-checkout demo script.
 - [ ] Tag the release only after the exit gate passes.
 
 ## 7. Acceptance Criteria
 
-- [ ] The exact message set sent to the model can be reconstructed.
-- [ ] Context overflow is deterministic and documented.
-- [ ] Regeneration preserves the original answer.
-- [ ] Branching creates an independent continuation.
-- [ ] A failed or retried stream does not duplicate final messages.
-- [ ] Prompt and model versions are stored for each assistant response.
+- [x] The exact message set sent to the model can be reconstructed.
+- [x] Context overflow is deterministic and documented.
+- [x] Regeneration preserves the original answer.
+- [x] Branching creates an independent continuation.
+- [x] A failed or retried stream does not duplicate final messages.
+- [x] Prompt and model versions are stored for each assistant response.
 
 ## 8. How to Know the Milestone Is Complete
 
@@ -118,19 +118,19 @@ A feature that merely works in one manual demonstration does **not** complete th
 
 ## 9. Required Evidence
 
-- [ ] `docs/learning/02-context-management.md`
-- [ ] context-strategy experiment report
-- [ ] conversation domain diagram
-- [ ] demo conversation export
+- [x] `docs/learning/02-context-management.md`
+- [x] context-strategy experiment report
+- [x] conversation domain diagram
+- [x] demo conversation export
 - [ ] tag `contextwise-v0.2-assistant`
 
 Also attach or link:
 
-- [ ] one successful trace;
-- [ ] one representative failure trace;
-- [ ] benchmark or evaluation output;
-- [ ] release notes describing user-visible and architectural changes;
-- [ ] open issues for consciously deferred work.
+- [x] one successful trace;
+- [x] one representative failure trace;
+- [x] benchmark or evaluation output;
+- [x] release notes describing user-visible and architectural changes;
+- [x] open issues for consciously deferred work.
 
 ## 10. Suggested Demo Script
 
@@ -157,11 +157,16 @@ Before starting Milestone 3, verify:
 - [ ] All acceptance criteria pass.
 - [ ] Required tests pass locally and in CI.
 - [ ] The behavioral evaluation has a stored baseline.
-- [ ] The demo works from a clean environment.
-- [ ] Security and privacy review is complete.
+- [x] The demo works from a clean environment.
+- [x] Security and privacy review is complete.
 - [ ] The learning note and retrospective are committed.
 - [ ] The release tag exists and points to the evaluated commit.
 
 **Decision:** `PASS / PASS WITH DOCUMENTED DEBT / FAIL`
+
+**Current result:** `IMPLEMENTED LOCALLY — EXIT GATE OPEN`. Local behavior,
+evaluation, and security review are complete; a committed release revision,
+remote CI evidence, and the required tag are still missing. ADR-0002 records
+the limited exception for unresolved Milestone 1 evidence debt.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
