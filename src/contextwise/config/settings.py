@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     context_budget: int = Field(default=4096, alias="CONTEXTWISE_CONTEXT_BUDGET", gt=0)
     output_reserve: int = Field(default=512, alias="CONTEXTWISE_OUTPUT_RESERVE", ge=0)
     title_model: str | None = Field(default=None, alias="LLM_TITLE_MODEL")
+
     @model_validator(mode="after")
     def require_production_owner_token(self) -> "Settings":
         if self.environment == "production" and self.owner_token == "local-development-token":
