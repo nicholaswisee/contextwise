@@ -12,6 +12,8 @@ from contextwise.application.llm.generation_service import GenerationService
 from contextwise.application.llm.model_registry import ModelRegistry
 from contextwise.application.llm.prompt_registry import PromptRegistry
 from contextwise.application.llm.schema_registry import SchemaRegistry
+from contextwise.application.rag.embeddings import CloudEmbeddingClient, HashEmbeddingClient
+from contextwise.application.rag.service import RagService
 from contextwise.config import Settings
 from contextwise.infrastructure.conversations import ConversationRepository
 from contextwise.infrastructure.database import Database
@@ -19,6 +21,7 @@ from contextwise.infrastructure.documents import DocumentRepository
 from contextwise.infrastructure.invocations import InvocationRepository
 from contextwise.infrastructure.llm.litellm_client import LiteLLMClient
 from contextwise.infrastructure.object_store import LocalObjectStore
+from contextwise.infrastructure.rag import RagRepository
 
 
 class AppState:
@@ -56,6 +59,17 @@ class AppState:
             fallback_model=settings.llm_fallback_model,
             primary_model=settings.llm_primary_model,
         )
+        self.rag_repository = RagRepository(self.database.session_factory)
+        embedding = (
+            HashEmbeddingClient(settings.embedding_model.removeprefix("hash-256-"))
+            if settings.embedding_model.startswith("hash-256-")
+            else CloudEmbeddingClient(
+                settings.embedding_model,
+                settings.embedding_api_key or "",
+                settings.embedding_base_url,
+            )
+        )
+        self.rag_service = RagService(self.rag_repository, embedding, self.generation_service)
         self.title_service = (
             TitleService(
                 self.generation_service, self.conversation_repository, settings.title_model
@@ -125,6 +139,10 @@ def get_assistant_service() -> AssistantService:
 
 def get_ingestion_service() -> IngestionService:
     return get_state().ingestion_service
+
+
+def get_rag_service() -> RagService:
+    return get_state().rag_service
 
 
 def get_invocation_repository() -> InvocationRepository:

@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 
+from pgvector.sqlalchemy import VECTOR
 from sqlalchemy import (
     JSON,
     Boolean,
@@ -206,3 +207,89 @@ class IngestionJob(Base):
     lease_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class RagCollection(Base):
+    __tablename__ = "rag_collections"
+    __table_args__ = (UniqueConstraint("owner_id", "name", name="uq_rag_collection_owner_name"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    owner_id: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
+    name: Mapped[str] = mapped_column(String(128), nullable=False)
+    active_index_id: Mapped[str | None] = mapped_column(String(36))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class RagCollectionDocument(Base):
+    __tablename__ = "rag_collection_documents"
+
+    collection_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("rag_collections.id", ondelete="CASCADE"), primary_key=True
+    )
+    document_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("documents.id", ondelete="CASCADE"), primary_key=True
+    )
+
+
+class RagIndex(Base):
+    __tablename__ = "rag_indexes"
+    __table_args__ = (UniqueConstraint("collection_id", "number", name="uq_rag_index_number"),)
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    collection_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("rag_collections.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    number: Mapped[int] = mapped_column(Integer, nullable=False)
+    config: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    embedding_model: Mapped[str] = mapped_column(String(128), nullable=False)
+    membership: Mapped[dict[str, str]] = mapped_column(JSON, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class RagChunk(Base):
+    __tablename__ = "rag_chunks"
+    __table_args__ = (
+        UniqueConstraint("index_id", "segment_id", "ordinal", name="uq_rag_chunk_identity"),
+        Index(
+            "ix_rag_chunks_embedding_cosine",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+        ),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    index_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("rag_indexes.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    document_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    version_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    segment_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    ordinal: Mapped[int] = mapped_column(Integer, nullable=False)
+    text: Mapped[str] = mapped_column(String, nullable=False)
+    page: Mapped[int | None] = mapped_column(Integer)
+    section: Mapped[str | None] = mapped_column(String(255))
+    source_start_offset: Mapped[int] = mapped_column(Integer, nullable=False)
+    source_end_offset: Mapped[int] = mapped_column(Integer, nullable=False)
+    segment_start_offset: Mapped[int] = mapped_column(Integer, nullable=False)
+    segment_end_offset: Mapped[int] = mapped_column(Integer, nullable=False)
+    embedding: Mapped[list[float]] = mapped_column(VECTOR(256), nullable=False)
+
+
+class RagRetrievalRun(Base):
+    __tablename__ = "rag_retrieval_runs"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    owner_id: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
+    collection_id: Mapped[str] = mapped_column(String(36), nullable=False)
+    index_id: Mapped[str | None] = mapped_column(String(36))
+    index_number: Mapped[int | None] = mapped_column(Integer)
+    query: Mapped[str] = mapped_column(String(2000), nullable=False)
+    config: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False)
+    candidates: Mapped[list[dict[str, object]]] = mapped_column(JSON, nullable=False)
+    selected_evidence_ids: Mapped[list[str]] = mapped_column(JSON, nullable=False)
+    answer: Mapped[str | None] = mapped_column(String)
+    status: Mapped[str] = mapped_column(String(32), nullable=False)
+    latency_ms: Mapped[int] = mapped_column(Integer, nullable=False)
+    estimated_cost_usd: Mapped[float | None] = mapped_column(Float)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

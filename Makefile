@@ -19,10 +19,10 @@ test-integration: test-db-up
 	@trap '$(MAKE) test-db-down' EXIT; TEST_DATABASE_URL=$(TEST_DATABASE_URL) uv run pytest -m integration -v
 
 lint:
-	uv run ruff check src tests
+	uv run ruff check src tests scripts
 
 format:
-	uv run ruff format src tests
+	uv run ruff format src tests scripts
 
 type:
 	uv run mypy src

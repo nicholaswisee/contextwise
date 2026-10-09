@@ -32,6 +32,11 @@ class Settings(BaseSettings):
     ingestion_timeout_seconds: float = Field(
         default=30, alias="CONTEXTWISE_INGESTION_TIMEOUT_SECONDS", gt=0
     )
+    embedding_model: str = Field(default="hash-256-v1", alias="CONTEXTWISE_EMBEDDING_MODEL")
+    embedding_api_key: str | None = Field(default=None, alias="CONTEXTWISE_EMBEDDING_API_KEY")
+    embedding_base_url: str = Field(
+        default="https://api.openai.com/v1", alias="CONTEXTWISE_EMBEDDING_BASE_URL"
+    )
 
     @model_validator(mode="after")
     def require_production_owner_token(self) -> "Settings":

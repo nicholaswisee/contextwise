@@ -1,0 +1,143 @@
+{
+  "success": {
+    "answer": {
+      "run_id": "4a9f68b2-9df5-4a1f-9711-16a0ad5af81b",
+      "index_id": "7c20a548-47c1-4eca-b085-b0c9a4a74edb",
+      "index_number": 1,
+      "embedding_model": "hash-256-v1",
+      "candidates": [
+        {
+          "id": "ca1a8461-a513-4781-9a89-707047d0a4e4",
+          "citation_id": "E1",
+          "document_id": "72c42092-25de-48f0-9ab5-18d57626a1c6",
+          "version_id": "1e5c10cc-dfa9-47f5-99ef-fb1c020b7bbd",
+          "segment_id": "e18beabf-4bd7-4415-9e51-ddaead8d161e",
+          "page": null,
+          "section": "Station guide",
+          "source_start_offset": 17,
+          "source_end_offset": 81,
+          "segment_start_offset": 0,
+          "segment_end_offset": 64,
+          "text": "The station signal is amber fox. The station exit is east hatch.",
+          "score": 0.7302968123643644
+        }
+      ],
+      "selected": [
+        {
+          "id": "ca1a8461-a513-4781-9a89-707047d0a4e4",
+          "citation_id": "E1",
+          "document_id": "72c42092-25de-48f0-9ab5-18d57626a1c6",
+          "version_id": "1e5c10cc-dfa9-47f5-99ef-fb1c020b7bbd",
+          "segment_id": "e18beabf-4bd7-4415-9e51-ddaead8d161e",
+          "page": null,
+          "section": "Station guide",
+          "source_start_offset": 17,
+          "source_end_offset": 81,
+          "segment_start_offset": 0,
+          "segment_end_offset": 64,
+          "text": "The station signal is amber fox. The station exit is east hatch.",
+          "score": 0.7302968123643644
+        }
+      ],
+      "answer": "The source says: \"The station signal is amber fox.\" [E1]",
+      "status": "answered",
+      "latency_ms": 16
+    },
+    "passage": {
+      "id": "ca1a8461-a513-4781-9a89-707047d0a4e4",
+      "filename": "rag-demo-b7142f5c.md",
+      "document_id": "72c42092-25de-48f0-9ab5-18d57626a1c6",
+      "version_id": "1e5c10cc-dfa9-47f5-99ef-fb1c020b7bbd",
+      "segment_id": "e18beabf-4bd7-4415-9e51-ddaead8d161e",
+      "page": null,
+      "section": "Station guide",
+      "source_start_offset": 17,
+      "source_end_offset": 81,
+      "segment_start_offset": 0,
+      "segment_end_offset": 64,
+      "text": "The station signal is amber fox. The station exit is east hatch."
+    },
+    "run": {
+      "id": "4a9f68b2-9df5-4a1f-9711-16a0ad5af81b",
+      "collection_id": "dffdc834-3bbc-4cfa-bf08-b338e6ac99ff",
+      "index_id": "7c20a548-47c1-4eca-b085-b0c9a4a74edb",
+      "index_number": 1,
+      "query": "What is the station signal?",
+      "config": {
+        "top_k": 5,
+        "min_score": 0.0,
+        "context_tokens": 400,
+        "query_rewrite": false,
+        "effective_query": "What is the station signal?",
+        "generation_model": "extractive"
+      },
+      "candidates": [
+        {
+          "id": "ca1a8461-a513-4781-9a89-707047d0a4e4",
+          "score": 0.7302968123643644
+        }
+      ],
+      "selected_evidence_ids": [
+        "ca1a8461-a513-4781-9a89-707047d0a4e4"
+      ],
+      "answer": "The source says: \"The station signal is amber fox.\" [E1]",
+      "status": "answered",
+      "latency_ms": 16,
+      "estimated_cost_usd": null
+    }
+  },
+  "failure": {
+    "run_id": "07878947-5a80-4e0b-afe7-42ad5a2735ba",
+    "index_id": "7c20a548-47c1-4eca-b085-b0c9a4a74edb",
+    "index_number": 1,
+    "embedding_model": "hash-256-v1",
+    "candidates": [],
+    "selected": [],
+    "answer": "I cannot provide a supported answer from these documents.",
+    "status": "insufficient_evidence",
+    "latency_ms": 14
+  },
+  "retrieval_only": {
+    "run_id": "2912faf8-5a82-424c-b557-fdc2cef62f46",
+    "index_id": "7c20a548-47c1-4eca-b085-b0c9a4a74edb",
+    "index_number": 1,
+    "embedding_model": "hash-256-v1",
+    "candidates": [
+      {
+        "id": "ca1a8461-a513-4781-9a89-707047d0a4e4",
+        "citation_id": "E1",
+        "document_id": "72c42092-25de-48f0-9ab5-18d57626a1c6",
+        "version_id": "1e5c10cc-dfa9-47f5-99ef-fb1c020b7bbd",
+        "segment_id": "e18beabf-4bd7-4415-9e51-ddaead8d161e",
+        "page": null,
+        "section": "Station guide",
+        "source_start_offset": 17,
+        "source_end_offset": 81,
+        "segment_start_offset": 0,
+        "segment_end_offset": 64,
+        "text": "The station signal is amber fox. The station exit is east hatch.",
+        "score": 0.6123724579811096
+      }
+    ],
+    "selected": [
+      {
+        "id": "ca1a8461-a513-4781-9a89-707047d0a4e4",
+        "citation_id": "E1",
+        "document_id": "72c42092-25de-48f0-9ab5-18d57626a1c6",
+        "version_id": "1e5c10cc-dfa9-47f5-99ef-fb1c020b7bbd",
+        "segment_id": "e18beabf-4bd7-4415-9e51-ddaead8d161e",
+        "page": null,
+        "section": "Station guide",
+        "source_start_offset": 17,
+        "source_end_offset": 81,
+        "segment_start_offset": 0,
+        "segment_end_offset": 64,
+        "text": "The station signal is amber fox. The station exit is east hatch.",
+        "score": 0.6123724579811096
+      }
+    ],
+    "answer": null,
+    "status": "retrieval_only",
+    "latency_ms": 7
+  }
+}

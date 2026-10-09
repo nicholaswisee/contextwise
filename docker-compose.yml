@@ -1,6 +1,6 @@
 services:
     postgres:
-        image: postgres:16-alpine
+        image: pgvector/pgvector:0.8.7-pg16-bookworm
         environment:
             POSTGRES_USER: contextwise
             POSTGRES_PASSWORD: contextwise
@@ -28,6 +28,9 @@ services:
             LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-fake-default}
             LLM_FALLBACK_MODEL: ${LLM_FALLBACK_MODEL:-}
             LLM_MODELS_JSON: ${LLM_MODELS_JSON:-}
+            CONTEXTWISE_EMBEDDING_MODEL: ${CONTEXTWISE_EMBEDDING_MODEL:-hash-256-v1}
+            CONTEXTWISE_EMBEDDING_API_KEY: ${CONTEXTWISE_EMBEDDING_API_KEY:-}
+            CONTEXTWISE_EMBEDDING_BASE_URL: ${CONTEXTWISE_EMBEDDING_BASE_URL:-https://api.openai.com/v1}
             CONTEXTWISE_OWNER_TOKEN: ${CONTEXTWISE_OWNER_TOKEN:?Set CONTEXTWISE_OWNER_TOKEN before starting the API}
             CONTEXTWISE_DOCUMENT_STORE_PATH: /data/documents
         volumes:
