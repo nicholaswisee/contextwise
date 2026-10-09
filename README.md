@@ -19,8 +19,8 @@ A production-grade, context-aware personal AI workspace — built as a solo lear
 
 **Milestone 3 passed with documented debt** and is tagged
 `contextwise-v0.3-ingestion`. Milestone 4's manual dense retrieval and cited
-RAG slice is implemented and under its release gate. Milestones 0 and 1
-retain their earlier documented gate debt.
+RAG slice passed with documented debt and is tagged `contextwise-v0.4-rag`.
+Milestones 0 and 1 retain their earlier documented gate debt.
 
 ## Getting Started
 

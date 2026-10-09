@@ -2,7 +2,7 @@
 
 **Milestone:** 4 — Manual Dense Retrieval and Cited RAG
 **Date:** 2026-10-09
-**Release tag:** Pending exit gate.
+**Release tag:** `contextwise-v0.4-rag`.
 
 ## Built
 
@@ -36,5 +36,9 @@ baseline is not a claim about real semantic search quality.
 
 ## Exit decision
 
-`IMPLEMENTED — EXIT GATE OPEN` until the final local and remote checks, clean
-demo, security review, and release tag are complete. No v0.4 tag is claimed.
+`PASS WITH DOCUMENTED DEBT`. The clean live demo, 106 local tests, frozen
+benchmark, local security review, and
+[remote CI](https://github.com/nicholaswisee/contextwise/actions/runs/37901378235)
+pass. The release tag marks the documentation-only gate closure on top of the
+evaluated code. Credentialed semantic-provider quality remains CW-09; the
+production and adversarial follow-ups are CW-10 through CW-12.

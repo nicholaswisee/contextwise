@@ -72,6 +72,18 @@ async def test_rag_collection_reindex_citations_and_trace(monkeypatch, apply_mig
         assert citation.status_code == 200
         assert citation.json()["filename"] == filename
         assert citation.json()["text"] in body["answer"]
+        version_detail = await client.get(
+            f"/v1/document-versions/{upload.json()['version']['id']}", headers=headers
+        )
+        source_segment = version_detail.json()["segments"][0]
+        assert citation.json()["source_start_offset"] == source_segment["start_offset"]
+        assert citation.json()["source_end_offset"] == source_segment["end_offset"]
+        assert (
+            source_segment["text"][
+                citation.json()["segment_start_offset"] : citation.json()["segment_end_offset"]
+            ]
+            == citation.json()["text"]
+        )
         trace = await client.get(f"/v1/rag/runs/{body['run_id']}", headers=headers)
         assert trace.json()["candidates"][0]["id"] == evidence_id
         assert trace.json()["selected_evidence_ids"] == [evidence_id]

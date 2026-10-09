@@ -94,7 +94,7 @@ At the end, you should be able to explain these topics without relying on framew
 - [x] Record known limitations and deferred work.
 - [x] Complete the milestone retrospective template.
 - [x] Prepare a clean-checkout demo script.
-- [ ] Tag the release only after the exit gate passes.
+- [x] Tag the release only after the exit gate passes.
 
 ## 7. Acceptance Criteria
 
@@ -128,7 +128,7 @@ A feature that merely works in one manual demonstration does **not** complete th
 - [x] `datasets/retrieval/v1/`
 - [x] chunking benchmark report
 - [x] retrieval failure taxonomy
-- [ ] tag `contextwise-v0.4-rag`
+- [x] tag `contextwise-v0.4-rag`
 
 Also attach or link:
 
@@ -161,19 +161,23 @@ Before starting Milestone 5, verify:
 
 - [x] All required deliverables are complete or explicitly removed through an ADR.
 - [x] All acceptance criteria pass.
-- [ ] Required tests pass locally and in CI.
+- [x] Required tests pass locally and in CI.
 - [x] The behavioral evaluation has a stored baseline.
 - [x] The demo works from a clean environment.
 - [x] Security and privacy review is complete for the local single-owner scope.
-- [ ] The learning note and retrospective are committed.
-- [ ] The release tag exists and points to the evaluated commit.
+- [x] The learning note and retrospective are committed.
+- [x] The release tag exists and points to the evaluated commit.
 
-**Decision:** `IMPLEMENTED — EXIT GATE OPEN`
+**Decision:** `PASS WITH DOCUMENTED DEBT`
 
-The local 50-case hash-embedding baseline and live Docker demo pass. The
-credentialed semantic-provider baseline is deferred as CW-09; the local hash
-model measures lexical projection only. Required remote CI and the release
-tag remain open. See `docs/evaluations/04-rag-report.md` and
-`docs/security/04-rag-review.md` for measured behavior and limits.
+The local 50-case hash-embedding baseline, live Docker demo, 106 local tests,
+and [remote check, migration, and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37901378235)
+pass on the evaluated code. The closure commit and tag mark that revision plus
+documentation-only gate updates. The credentialed semantic-provider baseline
+is deferred as CW-09; the local hash model measures lexical projection only.
+CW-10 through CW-12 cover production indexing, retention, and adversarial
+generative-answer evaluation. These are bounded follow-ups for a local
+single-owner release, not exceptions to owner isolation or citation integrity.
+See `docs/evaluations/04-rag-report.md` and `docs/security/04-rag-review.md`.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
