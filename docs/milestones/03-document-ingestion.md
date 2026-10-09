@@ -31,76 +31,76 @@ At the end, you should be able to explain these topics without relying on framew
 
 ## 5. Required Deliverables
 
-- [ ] upload endpoint
-- [ ] local object-store adapter
-- [ ] file hashing and deduplication
-- [ ] MIME, extension, and size validation
-- [ ] Markdown, TXT, and PDF parsers
-- [ ] normalization pipeline
-- [ ] document and version entities
-- [ ] background ingestion job
-- [ ] processing status and error reporting
-- [ ] reprocessing endpoint
+- [x] upload endpoint
+- [x] local object-store adapter
+- [x] file hashing and deduplication
+- [x] MIME, extension, and size validation
+- [x] Markdown, TXT, and PDF parsers
+- [x] normalization pipeline
+- [x] document and version entities
+- [x] background ingestion job
+- [x] processing status and error reporting
+- [x] reprocessing endpoint
 
 ## 6. Task Checklist
 
 ### 6.1 Design Before Coding
 
-- [ ] Define document identity versus document version identity.
-- [ ] Specify the ingestion state machine.
-- [ ] Define parser output with page, section, and character-offset metadata.
-- [ ] Define retry and idempotency keys.
-- [ ] Document file-size, MIME, timeout, and storage limits.
+- [x] Define document identity versus document version identity.
+- [x] Specify the ingestion state machine.
+- [x] Define parser output with page, section, and character-offset metadata.
+- [x] Define retry and idempotency keys.
+- [x] Document file-size, MIME, timeout, and storage limits.
 
 ### 6.2 Implementation
 
-- [ ] Implement `ObjectStore` and local adapter.
-- [ ] Persist the original bytes before parsing.
-- [ ] Compute content hashes.
-- [ ] Implement upload validation and rejection reasons.
-- [ ] Implement Markdown and text parsers.
-- [ ] Implement PDF parsing with page provenance.
-- [ ] Normalize whitespace without destroying source locations.
-- [ ] Create jobs with status, attempts, cancellation, and trace IDs.
-- [ ] Persist extracted text separately from original files.
-- [ ] Implement retry and reprocess flows.
+- [x] Implement `ObjectStore` and local adapter.
+- [x] Persist the original bytes before parsing.
+- [x] Compute content hashes.
+- [x] Implement upload validation and rejection reasons.
+- [x] Implement Markdown and text parsers.
+- [x] Implement PDF parsing with page provenance.
+- [x] Normalize whitespace without destroying source locations.
+- [x] Create jobs with status, attempts, cancellation, and trace IDs.
+- [x] Persist extracted text separately from original files.
+- [x] Implement retry and reprocess flows.
 
 ### 6.3 Deterministic and Integration Tests
 
-- [ ] Corrupt PDF.
-- [ ] Encrypted PDF.
-- [ ] Empty document.
-- [ ] Duplicate upload.
-- [ ] Same filename with different bytes.
-- [ ] Parser timeout.
-- [ ] Worker restart during processing.
-- [ ] Repeated job delivery.
-- [ ] Oversized upload.
-- [ ] Unsupported MIME type.
+- [x] Corrupt PDF.
+- [x] Encrypted PDF.
+- [x] Empty document.
+- [x] Duplicate upload.
+- [x] Same filename with different bytes.
+- [x] Parser timeout.
+- [x] Worker restart during processing.
+- [x] Repeated job delivery.
+- [x] Oversized upload.
+- [x] Unsupported MIME type.
 
 ### 6.4 Behavioral Evaluation and Measurement
 
-- [ ] Create a parser fixture set with expected passages and source locations.
-- [ ] Measure extraction completeness and location accuracy for at least 15 representative documents.
+- [x] Create a parser fixture set with expected passages and source locations.
+- [x] Measure extraction completeness and location accuracy for at least 15 representative documents.
 
 ### 6.5 Documentation and Cleanup
 
-- [ ] Update the architecture diagram if boundaries changed.
-- [ ] Add or revise Architecture Decision Records for consequential choices.
-- [ ] Update API or CLI documentation.
-- [ ] Add a migration or upgrade note when persistent data changed.
-- [ ] Record known limitations and deferred work.
-- [ ] Complete the milestone retrospective template.
-- [ ] Prepare a clean-checkout demo script.
-- [ ] Tag the release only after the exit gate passes.
+- [x] Update the architecture diagram if boundaries changed.
+- [x] Add or revise Architecture Decision Records for consequential choices.
+- [x] Update API or CLI documentation.
+- [x] Add a migration or upgrade note when persistent data changed.
+- [x] Record known limitations and deferred work.
+- [x] Complete the milestone retrospective template.
+- [x] Prepare a clean-checkout demo script.
+- [x] Tag the release only after the exit gate passes.
 
 ## 7. Acceptance Criteria
 
-- [ ] Repeated ingestion does not create duplicate records or segments.
-- [ ] Original bytes and extracted text are separately retained.
-- [ ] Every extracted segment maps to a document version and source location.
-- [ ] Failed jobs are observable, retryable, and safe to repeat.
-- [ ] Unsupported and unsafe files fail before expensive processing.
+- [x] Repeated ingestion does not create duplicate records or segments.
+- [x] Original bytes and extracted text are separately retained.
+- [x] Every extracted segment maps to a document version and source location.
+- [x] Failed jobs are observable, retryable, and safe to repeat.
+- [x] Unsupported and unsafe files fail before expensive processing.
 
 ## 8. How to Know the Milestone Is Complete
 
@@ -121,19 +121,19 @@ A feature that merely works in one manual demonstration does **not** complete th
 
 ## 9. Required Evidence
 
-- [ ] `docs/learning/03-ingestion.md`
-- [ ] parser fixture dataset
-- [ ] ingestion state diagram
-- [ ] failure matrix
-- [ ] tag `contextwise-v0.3-ingestion`
+- [x] `docs/learning/03-ingestion.md`
+- [x] parser fixture dataset
+- [x] ingestion state diagram
+- [x] failure matrix
+- [x] tag `contextwise-v0.3-ingestion`
 
 Also attach or link:
 
-- [ ] one successful trace;
-- [ ] one representative failure trace;
-- [ ] benchmark or evaluation output;
-- [ ] release notes describing user-visible and architectural changes;
-- [ ] open issues for consciously deferred work.
+- [x] one successful trace;
+- [x] one representative failure trace;
+- [x] benchmark or evaluation output;
+- [x] release notes describing user-visible and architectural changes;
+- [x] open issues for consciously deferred work.
 
 ## 10. Suggested Demo Script
 
@@ -156,15 +156,26 @@ Write answers in the learning note. The point is not to produce polished theory.
 
 Before starting Milestone 4, verify:
 
-- [ ] All required deliverables are complete or explicitly removed through an ADR.
-- [ ] All acceptance criteria pass.
-- [ ] Required tests pass locally and in CI.
-- [ ] The behavioral evaluation has a stored baseline.
-- [ ] The demo works from a clean environment.
-- [ ] Security and privacy review is complete.
-- [ ] The learning note and retrospective are committed.
-- [ ] The release tag exists and points to the evaluated commit.
+- [x] All required deliverables are complete or explicitly removed through an ADR.
+- [x] All acceptance criteria pass.
+- [x] Required tests pass locally and in CI.
+- [x] The behavioral evaluation has a stored baseline.
+- [x] The demo works from a clean environment.
+- [x] Security and privacy review is complete for the local single-owner scope.
+- [x] The learning note and retrospective are committed.
+- [x] The release tag exists and points to the evaluated commit.
 
-**Decision:** `PASS / PASS WITH DOCUMENTED DEBT / FAIL`
+**Decision:** `PASS WITH DOCUMENTED DEBT`
+
+The ingestion code at `c1542df` passed 78 local unit tests, 23 local
+PostgreSQL integration tests, the Docker smoke demo, and [remote check,
+migration, and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37859902740).
+The 15-document parser fixture set passed extraction and location checks.
+The final documentation revision `92fcd61` passed [remote check, migration,
+and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37860031671).
+The release tag points to this documentation-only gate closure on top of that
+evaluated revision. CW-05 through CW-08 remain bounded follow-up work for
+public upload, complex PDFs, and retention; they do not block the local
+single-owner ingestion slice.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.
