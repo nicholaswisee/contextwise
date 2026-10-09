@@ -1,0 +1,85 @@
+{
+  "version": "v1",
+  "documents": [
+    {
+      "name": "aster-archive.md",
+      "heading": "Aster archive operations",
+      "facts": [
+        {"question": "What is the Aster archive north gate code?", "answer": "amber fox", "statement": "The Aster archive north gate code is amber fox."},
+        {"question": "When does the Aster archive open?", "answer": "06:15", "statement": "The Aster archive opens at 06:15."},
+        {"question": "Who keeps the Aster archive keys?", "answer": "Mira", "statement": "Mira keeps the Aster archive keys."},
+        {"question": "Where is the Aster archive backup stored?", "answer": "cedar vault", "statement": "The Aster archive backup is stored in the cedar vault."},
+        {"question": "What color is the Aster archive badge?", "answer": "copper", "statement": "The Aster archive badge is copper."},
+        {"question": "How many shelves does the Aster archive have?", "answer": "twelve", "statement": "The Aster archive has twelve shelves."},
+        {"question": "What is the Aster archive radio channel?", "answer": "channel four", "statement": "The Aster archive radio uses channel four."},
+        {"question": "Which day is Aster archive maintenance?", "answer": "Tuesday", "statement": "Aster archive maintenance occurs on Tuesday."},
+        {"question": "What powers the Aster archive lamps?", "answer": "solar cells", "statement": "Solar cells power the Aster archive lamps."},
+        {"question": "What is the Aster archive emergency exit?", "answer": "east hatch", "statement": "The Aster archive emergency exit is the east hatch."}
+      ]
+    },
+    {
+      "name": "birch-lab.md",
+      "heading": "Birch lab procedures",
+      "facts": [
+        {"question": "What is the Birch lab sample freezer temperature?", "answer": "minus eighteen degrees", "statement": "The Birch lab sample freezer is set to minus eighteen degrees."},
+        {"question": "Who approves Birch lab experiments?", "answer": "Noel", "statement": "Noel approves Birch lab experiments."},
+        {"question": "Where are Birch lab goggles stored?", "answer": "blue cabinet", "statement": "Birch lab goggles are stored in the blue cabinet."},
+        {"question": "What is the Birch lab spill signal?", "answer": "three bells", "statement": "The Birch lab spill signal is three bells."},
+        {"question": "When is Birch lab calibration?", "answer": "Friday morning", "statement": "Birch lab calibration happens Friday morning."},
+        {"question": "Which Birch lab instrument measures pressure?", "answer": "mercury gauge", "statement": "The Birch lab mercury gauge measures pressure."},
+        {"question": "What is the Birch lab waste bin label?", "answer": "orange stripe", "statement": "The Birch lab waste bin has an orange stripe label."},
+        {"question": "How many Birch lab microscopes are available?", "answer": "seven", "statement": "Seven microscopes are available in the Birch lab."},
+        {"question": "What is the Birch lab visitor limit?", "answer": "two visitors", "statement": "The Birch lab allows two visitors at a time."},
+        {"question": "Where is the Birch lab first aid kit?", "answer": "west drawer", "statement": "The Birch lab first aid kit is in the west drawer."}
+      ]
+    },
+    {
+      "name": "coral-harbor.md",
+      "heading": "Coral harbor guide",
+      "facts": [
+        {"question": "What is the Coral harbor pilot boat name?", "answer": "Silver Heron", "statement": "The Coral harbor pilot boat is named Silver Heron."},
+        {"question": "When does Coral harbor high tide occur?", "answer": "14:40", "statement": "Coral harbor high tide occurs at 14:40."},
+        {"question": "Who manages Coral harbor docks?", "answer": "Ravi", "statement": "Ravi manages the Coral harbor docks."},
+        {"question": "What is the Coral harbor fog signal?", "answer": "two long blasts", "statement": "The Coral harbor fog signal is two long blasts."},
+        {"question": "Where is Coral harbor fuel stored?", "answer": "pier six", "statement": "Coral harbor fuel is stored at pier six."},
+        {"question": "What color is the Coral harbor safety flag?", "answer": "yellow", "statement": "The Coral harbor safety flag is yellow."},
+        {"question": "How deep is the Coral harbor channel?", "answer": "nine meters", "statement": "The Coral harbor channel is nine meters deep."},
+        {"question": "Which radio channel does Coral harbor use?", "answer": "channel twelve", "statement": "Coral harbor radio uses channel twelve."},
+        {"question": "When is Coral harbor inspection day?", "answer": "Wednesday", "statement": "Coral harbor inspection day is Wednesday."},
+        {"question": "What marks the Coral harbor entrance?", "answer": "red buoy", "statement": "A red buoy marks the Coral harbor entrance."}
+      ]
+    },
+    {
+      "name": "dune-garden.md",
+      "heading": "Dune garden care",
+      "facts": [
+        {"question": "What is the Dune garden irrigation interval?", "answer": "every six hours", "statement": "Dune garden irrigation runs every six hours."},
+        {"question": "Who tends the Dune garden orchids?", "answer": "Lena", "statement": "Lena tends the Dune garden orchids."},
+        {"question": "Where is Dune garden compost kept?", "answer": "stone shed", "statement": "Dune garden compost is kept in the stone shed."},
+        {"question": "What is the Dune garden soil mixture?", "answer": "sand and loam", "statement": "The Dune garden soil mixture is sand and loam."},
+        {"question": "When does the Dune garden close?", "answer": "19:30", "statement": "The Dune garden closes at 19:30."},
+        {"question": "Which Dune garden bed has lavender?", "answer": "bed three", "statement": "Dune garden bed three contains lavender."},
+        {"question": "How many Dune garden rain barrels exist?", "answer": "five", "statement": "The Dune garden has five rain barrels."},
+        {"question": "What color are Dune garden tool tags?", "answer": "green", "statement": "Dune garden tool tags are green."},
+        {"question": "What is the Dune garden pest remedy?", "answer": "neem spray", "statement": "The Dune garden pest remedy is neem spray."},
+        {"question": "Where is the Dune garden seed register?", "answer": "glass office", "statement": "The Dune garden seed register is in the glass office."}
+      ]
+    },
+    {
+      "name": "ember-theater.md",
+      "heading": "Ember theater handbook",
+      "facts": [
+        {"question": "What is the Ember theater curtain color?", "answer": "crimson", "statement": "The Ember theater curtain is crimson."},
+        {"question": "Who directs Ember theater rehearsals?", "answer": "Sora", "statement": "Sora directs Ember theater rehearsals."},
+        {"question": "When does the Ember theater matinee begin?", "answer": "13:20", "statement": "The Ember theater matinee begins at 13:20."},
+        {"question": "Where are Ember theater props stored?", "answer": "room nine", "statement": "Ember theater props are stored in room nine."},
+        {"question": "What is the Ember theater lighting board name?", "answer": "Aurora", "statement": "The Ember theater lighting board is named Aurora."},
+        {"question": "How many Ember theater balcony seats exist?", "answer": "forty", "statement": "The Ember theater has forty balcony seats."},
+        {"question": "What is the Ember theater fire exit?", "answer": "south stair", "statement": "The Ember theater fire exit is the south stair."},
+        {"question": "Which day is Ember theater costume cleaning?", "answer": "Monday", "statement": "Ember theater costume cleaning occurs Monday."},
+        {"question": "What color are Ember theater usher badges?", "answer": "silver", "statement": "Ember theater usher badges are silver."},
+        {"question": "Where is the Ember theater ticket ledger?", "answer": "front kiosk", "statement": "The Ember theater ticket ledger is at the front kiosk."}
+      ]
+    }
+  ]
+}
