@@ -86,6 +86,19 @@ async def test_rag_collection_reindex_citations_and_trace(monkeypatch, apply_mig
         )
         assert invalid_generated.json()["status"] == "invalid_citation"
         assert invalid_generated.json()["answer"].startswith("I cannot")
+        fake = get_state().llm_clients["fake-default"]
+        monkeypatch.setattr(fake, "text", "The code is amber fox [E1]")
+        qualified = await client.post(
+            f"/v1/rag/collections/{collection_id}/ask",
+            headers=headers,
+            json={
+                "query": "launch code amber fox",
+                "generation_model": "fake-default",
+                "config": {"min_score": 0.0},
+            },
+        )
+        assert qualified.json()["status"] == "qualified_answer"
+        assert qualified.json()["answer"].startswith("Unverified generated answer:")
 
         class FailingEmbedding(HashEmbeddingClient):
             async def embed(self, texts):

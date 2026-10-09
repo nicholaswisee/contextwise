@@ -44,9 +44,10 @@ the evidence supplied to answer generation. Each result carries its stored
 chunk UUID and a request-local `[E1]` citation label. The default extractive
 answer quotes a sentence from selected evidence, cites its label, and abstains
 when the query lacks enough lexical support. An explicitly selected gateway
-model may synthesize an answer, but unrecognized or absent citations are
-rejected as `invalid_citation`. Citation validation proves a reference points
-to selected evidence; it does not prove every natural-language claim is true.
+model may synthesize a qualified answer, but unrecognized or absent citations
+are rejected as `invalid_citation`. Citation validation proves a reference
+points to selected evidence; it does not prove every natural-language claim is
+true, so gateway answers carry an explicit unverified label.
 
 Every retrieval request persists owner, collection, original and effective
 query, config, index ID and number, ranked candidate IDs/scores, selected

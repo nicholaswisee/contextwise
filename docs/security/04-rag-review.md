@@ -43,7 +43,8 @@ cloud embedding sends document content and questions to the configured
 provider; gateway generation sends selected passages and the question.
 Operators must choose providers consistent with their data policy. The
 whitespace context budget is approximate. Citation validation only checks
-reference integrity, so an LLM can make an unsupported claim with a valid
-label; the default extractive mode gives a narrower guarantee. Prompt
+reference integrity, so a gateway answer with valid labels is explicitly
+qualified as unverified; the default extractive mode gives a narrower
+guarantee. Prompt
 injection in documents still requires broader adversarial evaluation. These
 limits are tracked as CW-09 through CW-12.

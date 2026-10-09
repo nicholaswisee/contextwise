@@ -41,7 +41,8 @@ configured cloud model or deterministic `hash-256-v1`/`hash-256-v2`.
 Query body: `{"query":"...","config":{"top_k":5,"min_score":0.25,
 "context_tokens":400,"query_rewrite":false}}`. The ask route defaults to
 `generation_model:"extractive"`. A registered gateway model can be named
-explicitly; an invalid citation makes its answer abstain. `min_score` is a
+explicitly; a valid cited result is labeled unverified and an invalid citation
+makes its answer abstain. `min_score` is a
 cosine ranking threshold, not a probability. Evidence citation labels `[E1]`
 are local to one response; use the evidence object's `id` for the lookup URL.
 

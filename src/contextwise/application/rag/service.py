@@ -269,7 +269,7 @@ class RagService:
                 GenerationInput(prompt=prompt, model=generation_model, max_tokens=300), request_id
             )
             if valid_citations(output.text, selected):
-                answer, status = output.text, "answered"
+                answer, status = f"Unverified generated answer: {output.text}", "qualified_answer"
             else:
                 answer, status = (
                     "I cannot provide a supported answer from these documents.",
