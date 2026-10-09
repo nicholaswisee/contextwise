@@ -1,0 +1,15 @@
+{"extraction_complete": true, "format": "txt", "id": "txt-01", "latency_ms": 0.062, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "txt", "id": "txt-02", "latency_ms": 0.013, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "txt", "id": "txt-03", "latency_ms": 0.008, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "txt", "id": "txt-04", "latency_ms": 0.006, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "txt", "id": "txt-05", "latency_ms": 0.007, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "md", "id": "md-01", "latency_ms": 0.048, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "md", "id": "md-02", "latency_ms": 0.007, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "md", "id": "md-03", "latency_ms": 0.009, "location_accurate": true, "segment_count": 2}
+{"extraction_complete": true, "format": "md", "id": "md-04", "latency_ms": 0.006, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "md", "id": "md-05", "latency_ms": 0.006, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "pdf", "id": "pdf-01", "latency_ms": 1.15, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "pdf", "id": "pdf-02", "latency_ms": 0.705, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "pdf", "id": "pdf-03", "latency_ms": 0.657, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "pdf", "id": "pdf-04", "latency_ms": 0.606, "location_accurate": true, "segment_count": 1}
+{"extraction_complete": true, "format": "pdf", "id": "pdf-05", "latency_ms": 0.584, "location_accurate": true, "segment_count": 1}

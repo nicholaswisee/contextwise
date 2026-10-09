@@ -1,0 +1,26 @@
+{
+  "successful_job": {
+    "id": "b61233bb-5bc5-4cdb-a30f-b595b7764564",
+    "version_id": "781baf3b-8e00-4c87-88fd-82b6ac15fa2c",
+    "status": "completed",
+    "attempts": 1,
+    "error_code": null,
+    "trace_id": "ee1268d2-1499-4d9a-ad27-976420c210d8"
+  },
+  "failed_job": {
+    "id": "f73ad042-0751-482c-b0d0-06fdac89d201",
+    "version_id": "5048b26b-efc8-493c-ad13-0c1cb0e1f01d",
+    "status": "failed",
+    "attempts": 1,
+    "error_code": "invalid_pdf",
+    "trace_id": "09cdec87-8fb1-465f-96f0-d08627f36c9e"
+  },
+  "retried_job": {
+    "id": "f73ad042-0751-482c-b0d0-06fdac89d201",
+    "version_id": "5048b26b-efc8-493c-ad13-0c1cb0e1f01d",
+    "status": "failed",
+    "attempts": 2,
+    "error_code": "invalid_pdf",
+    "trace_id": "bf7c97dc-819e-4bab-bb07-7f2eaedf920a"
+  }
+}
