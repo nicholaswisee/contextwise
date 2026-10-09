@@ -1,0 +1,183 @@
+{
+  "conversation": {
+    "id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+    "owner_id": "local",
+    "title": null,
+    "head_message_id": "84c44640-f947-4d53-b361-a740e29b5593",
+    "source_conversation_id": null,
+    "source_message_id": null,
+    "created_at": "2026-10-08T17:26:58.846069Z",
+    "updated_at": "2026-10-08T17:27:10.470249Z",
+    "messages": [
+      {
+        "id": "481b8fba-4c85-4113-ada2-4d44be4baad7",
+        "conversation_id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+        "parent_id": null,
+        "role": "user",
+        "parts": [
+          {
+            "type": "text",
+            "text": "My name is Ada."
+          }
+        ],
+        "status": "completed",
+        "model": null,
+        "model_name": null,
+        "provider": null,
+        "prompt_name": null,
+        "prompt_version": null,
+        "request_settings": null,
+        "invocation_id": null,
+        "source_conversation_id": null,
+        "source_message_id": null,
+        "created_at": "2026-10-08T17:26:58.869189Z",
+        "updated_at": "2026-10-08T17:26:58.869189Z"
+      },
+      {
+        "id": "bd1c46d8-82d6-4d79-b656-92bac623d6d0",
+        "conversation_id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+        "parent_id": "481b8fba-4c85-4113-ada2-4d44be4baad7",
+        "role": "assistant",
+        "parts": [
+          {
+            "type": "text",
+            "text": "Hello, Ada! It's nice to meet you. How can I assist you today? \ud83d\ude0a"
+          }
+        ],
+        "status": "completed",
+        "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+        "model_name": "openrouter-free-main",
+        "provider": "openrouter",
+        "prompt_name": "system",
+        "prompt_version": 1,
+        "request_settings": {
+          "temperature": null,
+          "max_tokens": 512
+        },
+        "invocation_id": "1012ed0c-29be-40ed-bb4b-dd652d02cc45",
+        "source_conversation_id": null,
+        "source_message_id": null,
+        "created_at": "2026-10-08T17:26:58.869189Z",
+        "updated_at": "2026-10-08T17:27:07.266742Z"
+      },
+      {
+        "id": "b95d22e9-63a3-45d6-9615-d2af6f276185",
+        "conversation_id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+        "parent_id": "bd1c46d8-82d6-4d79-b656-92bac623d6d0",
+        "role": "user",
+        "parts": [
+          {
+            "type": "text",
+            "text": "What name did I give?"
+          }
+        ],
+        "status": "completed",
+        "model": null,
+        "model_name": null,
+        "provider": null,
+        "prompt_name": null,
+        "prompt_version": null,
+        "request_settings": null,
+        "invocation_id": null,
+        "source_conversation_id": null,
+        "source_message_id": null,
+        "created_at": "2026-10-08T17:27:07.271771Z",
+        "updated_at": "2026-10-08T17:27:07.271771Z"
+      },
+      {
+        "id": "b88f87e3-44ee-42d8-9f71-e1d46226b453",
+        "conversation_id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+        "parent_id": "b95d22e9-63a3-45d6-9615-d2af6f276185",
+        "role": "assistant",
+        "parts": [
+          {
+            "type": "text",
+            "text": "You told me your name is **Ada** in your first message:  \n*\"My name is Ada.\"*  \n\nI\u2019m glad to know that! \ud83d\ude0a Is there anything else you\u2019d like help with today?"
+          }
+        ],
+        "status": "completed",
+        "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+        "model_name": "openrouter-free-main",
+        "provider": "openrouter",
+        "prompt_name": "system",
+        "prompt_version": 1,
+        "request_settings": {
+          "temperature": null,
+          "max_tokens": 512
+        },
+        "invocation_id": "3e9bc687-3be0-442f-815e-5559b3c95b91",
+        "source_conversation_id": null,
+        "source_message_id": null,
+        "created_at": "2026-10-08T17:27:07.271771Z",
+        "updated_at": "2026-10-08T17:27:10.459989Z"
+      },
+      {
+        "id": "84c44640-f947-4d53-b361-a740e29b5593",
+        "conversation_id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+        "parent_id": "b95d22e9-63a3-45d6-9615-d2af6f276185",
+        "role": "assistant",
+        "parts": [
+          {
+            "type": "text",
+            "text": "You told me your name is **Ada**! \ud83d\ude0a  \nIs there anything else you'd like to know or discuss? I'm here to help."
+          }
+        ],
+        "status": "completed",
+        "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+        "model_name": "openrouter-free-main",
+        "provider": "openrouter",
+        "prompt_name": "system",
+        "prompt_version": 1,
+        "request_settings": {
+          "temperature": null,
+          "max_tokens": 512
+        },
+        "invocation_id": "ca1e12f9-f9e7-49a2-99b1-0f04e44cb2d3",
+        "source_conversation_id": null,
+        "source_message_id": null,
+        "created_at": "2026-10-08T17:27:10.470249Z",
+        "updated_at": "2026-10-08T17:27:14.412498Z"
+      }
+    ]
+  },
+  "context": {
+    "conversation_id": "2e74b62a-dcf6-4777-837c-0b1f0f014529",
+    "message_id": "b88f87e3-44ee-42d8-9f71-e1d46226b453",
+    "invocation_id": "3e9bc687-3be0-442f-815e-5559b3c95b91",
+    "snapshot": {
+      "prompt_name": "system",
+      "prompt_version": 1,
+      "model_name": "openrouter-free-main",
+      "provider": "openrouter",
+      "model": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+      "temperature": null,
+      "max_tokens": 512,
+      "provider_messages": [
+        {
+          "role": "system",
+          "content": "You are Contextwise, a concise and helpful assistant."
+        },
+        {
+          "role": "user",
+          "content": "My name is Ada."
+        },
+        {
+          "role": "assistant",
+          "content": "Hello, Ada! It's nice to meet you. How can I assist you today? \ud83d\ude0a"
+        },
+        {
+          "role": "user",
+          "content": "What name did I give?"
+        }
+      ],
+      "selected_message_ids": [
+        "481b8fba-4c85-4113-ada2-4d44be4baad7",
+        "bd1c46d8-82d6-4d79-b656-92bac623d6d0",
+        "b95d22e9-63a3-45d6-9615-d2af6f276185"
+      ],
+      "estimated_input_tokens": 40,
+      "truncated": false
+    }
+  },
+  "branch_id": "677f0dd7-07b9-4677-a376-6ac330637fa9"
+}
