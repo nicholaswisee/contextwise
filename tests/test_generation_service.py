@@ -2,6 +2,7 @@ import asyncio
 
 import pytest
 
+from contextwise.application.llm.contracts import LLMMessage, LLMRequest
 from contextwise.application.llm.errors import (
     LLMProviderError,
     LLMStructuredOutputError,
@@ -236,3 +237,29 @@ async def test_generate_marks_real_provider_cost_as_unknown():
 
     assert result.estimated_cost_usd is None
     assert repository.completed[0][4] is None
+
+
+@pytest.mark.asyncio
+async def test_stream_request_uses_existing_invocation_without_creating_another():
+    client = FakeLLMClient(stream_chunks=("one",))
+    gateway = service(client)
+    request = LLMRequest(
+        model="fake-default",
+        messages=(
+            LLMMessage(role="system", content="rules"),
+            LLMMessage(role="user", content="hello"),
+        ),
+    )
+
+    chunks = [
+        chunk
+        async for chunk in gateway.stream_request(
+            request,
+            request_id="request-1",
+            invocation_id="invocation-existing",
+            model_name="fake-default",
+        )
+    ]
+
+    assert chunks[-1].invocation_id == "invocation-existing"
+    assert gateway.repository.started == []
