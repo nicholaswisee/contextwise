@@ -31,6 +31,7 @@ htmlcov/
 
 # Docker volumes
 postgres-data/
+data/
 
 # Superpowers plans are working artifacts
 # Keep only final plans; drop temp scratch files

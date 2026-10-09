@@ -1,0 +1,15 @@
+{"id":"txt-01","format":"txt","source":"A short note.","expected_text":"A short note.","expected_section":null,"expected_page":null}
+{"id":"txt-02","format":"txt","source":"Two   spaces become one.","expected_text":"Two spaces become one.","expected_section":null,"expected_page":null}
+{"id":"txt-03","format":"txt","source":"First line\nsecond line","expected_text":"First line second line","expected_section":null,"expected_page":null}
+{"id":"txt-04","format":"txt","source":"  Leading and trailing  ","expected_text":"Leading and trailing","expected_section":null,"expected_page":null}
+{"id":"txt-05","format":"txt","source":"Café résumé.","expected_text":"Café résumé.","expected_section":null,"expected_page":null}
+{"id":"md-01","format":"md","source":"# Overview\nA source paragraph.","expected_text":"A source paragraph.","expected_section":"Overview","expected_page":null}
+{"id":"md-02","format":"md","source":"## Details\nOne   more fact.","expected_text":"One more fact.","expected_section":"Details","expected_page":null}
+{"id":"md-03","format":"md","source":"Intro text.\n\n# Later\nLater text.","expected_text":"Intro text.\n\nLater text.","expected_section":"Later","expected_page":null}
+{"id":"md-04","format":"md","source":"### Source\nLine one\nline two","expected_text":"Line one line two","expected_section":"Source","expected_page":null}
+{"id":"md-05","format":"md","source":"# Résumé\nA unicode title.","expected_text":"A unicode title.","expected_section":"Résumé","expected_page":null}
+{"id":"pdf-01","format":"pdf","source":"Page one source","expected_text":"Page one source","expected_section":null,"expected_page":1}
+{"id":"pdf-02","format":"pdf","source":"Invoice total 42","expected_text":"Invoice total 42","expected_section":null,"expected_page":1}
+{"id":"pdf-03","format":"pdf","source":"Research citation","expected_text":"Research citation","expected_section":null,"expected_page":1}
+{"id":"pdf-04","format":"pdf","source":"Meeting agenda","expected_text":"Meeting agenda","expected_section":null,"expected_page":1}
+{"id":"pdf-05","format":"pdf","source":"Safety checklist","expected_text":"Safety checklist","expected_section":null,"expected_page":1}

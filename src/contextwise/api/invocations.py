@@ -4,10 +4,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from contextwise.api.dependencies import get_invocation_repository
+from contextwise.api.dependencies import get_invocation_repository, require_owner
 from contextwise.infrastructure.invocations import InvocationRepository
 
-router = APIRouter(prefix="/v1/invocations", tags=["invocations"])
+router = APIRouter(
+    prefix="/v1/invocations", tags=["invocations"], dependencies=[Depends(require_owner)]
+)
 
 
 class InvocationResponse(BaseModel):

@@ -8,6 +8,7 @@ git clone git@github.com:nicholaswisee/contextwise.git
 cd contextwise
 
 # 2. Start the local stack
+export CONTEXTWISE_OWNER_TOKEN='set outside source control'
 make up
 # Expected: postgres + api containers become healthy
 

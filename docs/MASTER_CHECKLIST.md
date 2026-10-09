@@ -24,39 +24,39 @@
 
 ## Milestone 2 — Contextwise Core Assistant
 
-- [ ] User story demonstrated
-- [ ] Required deliverables complete
-- [ ] Deterministic tests pass
-- [ ] Behavioral evaluation stored
-- [ ] Security/privacy review complete
-- [ ] Learning note complete
-- [ ] Retrospective complete
-- [ ] Release tagged
-- [ ] Exit gate: PASS
+- [x] User story demonstrated
+- [x] Required deliverables complete
+- [x] Deterministic tests pass
+- [x] Behavioral evaluation stored
+- [x] Security/privacy review complete
+- [x] Learning note complete
+- [x] Retrospective complete
+- [x] Release tagged
+- [x] Exit gate: PASS WITH DOCUMENTED DEBT
 
 ## Milestone 3 — Document Ingestion Pipeline
 
-- [ ] User story demonstrated
-- [ ] Required deliverables complete
-- [ ] Deterministic tests pass
-- [ ] Behavioral evaluation stored
-- [ ] Security/privacy review complete
-- [ ] Learning note complete
-- [ ] Retrospective complete
-- [ ] Release tagged
-- [ ] Exit gate: PASS
+- [x] User story demonstrated
+- [x] Required deliverables complete
+- [x] Deterministic tests pass
+- [x] Behavioral evaluation stored
+- [x] Security/privacy review complete
+- [x] Learning note complete
+- [x] Retrospective complete
+- [x] Release tagged
+- [x] Exit gate: PASS WITH DOCUMENTED DEBT
 
 ## Milestone 4 — Manual Dense Retrieval and Cited RAG
 
-- [ ] User story demonstrated
-- [ ] Required deliverables complete
-- [ ] Deterministic tests pass
-- [ ] Behavioral evaluation stored
-- [ ] Security/privacy review complete
-- [ ] Learning note complete
-- [ ] Retrospective complete
-- [ ] Release tagged
-- [ ] Exit gate: PASS
+- [x] User story demonstrated
+- [x] Required deliverables complete
+- [x] Deterministic tests pass
+- [x] Behavioral evaluation stored
+- [x] Security/privacy review complete
+- [x] Learning note complete
+- [x] Retrospective complete
+- [x] Release tagged
+- [x] Exit gate: PASS WITH DOCUMENTED DEBT
 
 ## Milestone 5 — Hybrid Retrieval and Reranking
 

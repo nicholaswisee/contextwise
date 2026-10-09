@@ -17,14 +17,18 @@ A production-grade, context-aware personal AI workspace — built as a solo lear
 
 ## Current Status
 
-**Milestone 0 implementation is in place.** The local quality checks pass, but the milestone exit gate remains open for the documented evidence and follow-up work listed in the milestone file.
+**Milestone 3 passed with documented debt** and is tagged
+`contextwise-v0.3-ingestion`. Milestone 4's manual dense retrieval and cited
+RAG slice passed with documented debt and is tagged `contextwise-v0.4-rag`.
+Milestones 0 and 1 retain their earlier documented gate debt.
 
 ## Getting Started
 
 1. Read [`docs/PROJECT_BRIEF.md`](docs/PROJECT_BRIEF.md) — the product vision and learning goals.
 2. Verify the toolchain against [`docs/PREREQUISITES.md`](docs/PREREQUISITES.md).
-3. Execute [Milestone 0 — Engineering Foundation](docs/milestones/00-engineering-foundation.md): the bootstrap that creates the reproducible Python service, health endpoints, PostgreSQL/Alembic setup, Docker Compose, and CI.
-4. Complete milestones in order; do not begin the next until the previous exit gate has a recorded decision.
+3. Run the [assistant and ingestion smoke demo](docs/demos/03-ingestion-demo.md)
+   or the [cited RAG demo](docs/demos/04-rag-demo.md).
+4. Check the [master checklist](docs/MASTER_CHECKLIST.md) for release-gate status.
 
 ## Toolchain Summary
 

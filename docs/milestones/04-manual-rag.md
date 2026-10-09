@@ -31,79 +31,79 @@ At the end, you should be able to explain these topics without relying on framew
 
 ## 5. Required Deliverables
 
-- [ ] configurable chunker
-- [ ] embedding service interface
-- [ ] cloud embedding adapter
-- [ ] pgvector schema and indexes
-- [ ] semantic retriever
-- [ ] top-k and score controls
-- [ ] evidence object model
-- [ ] RAG context builder
-- [ ] cited answer generator
-- [ ] retrieval debug endpoint
-- [ ] insufficient-evidence behavior
+- [x] configurable chunker
+- [x] embedding service interface
+- [x] cloud embedding adapter
+- [x] pgvector schema and indexes
+- [x] dense retriever; local baseline is lexical, cloud semantic run pending
+- [x] top-k and score controls
+- [x] evidence object model
+- [x] RAG context builder
+- [x] cited answer generator
+- [x] retrieval debug endpoint
+- [x] insufficient-evidence behavior
 
 ## 6. Task Checklist
 
 ### 6.1 Design Before Coding
 
-- [ ] Define chunk identity and index versioning.
-- [ ] Specify evidence fields and citation format.
-- [ ] Define retrieval-run persistence.
-- [ ] Define how selected collections constrain retrieval.
-- [ ] Specify abstention and uncertainty rules.
+- [x] Define chunk identity and index versioning.
+- [x] Specify evidence fields and citation format.
+- [x] Define retrieval-run persistence.
+- [x] Define how selected collections constrain retrieval.
+- [x] Specify abstention and uncertainty rules.
 
 ### 6.2 Implementation
 
-- [ ] Implement fixed-token chunking with overlap.
-- [ ] Implement heading-aware chunking.
-- [ ] Persist chunks with source metadata.
-- [ ] Implement batching, retries, and rate-limit handling for embeddings.
-- [ ] Store embedding model and index version.
-- [ ] Implement cosine-distance retrieval through pgvector.
-- [ ] Return evidence objects rather than prompt strings.
-- [ ] Build evidence context within a token budget.
-- [ ] Generate answers that cite evidence IDs.
-- [ ] Validate that citations reference retrieved evidence.
-- [ ] Add retrieval-only and full-RAG debug endpoints.
+- [x] Implement fixed-token chunking with overlap.
+- [x] Implement heading-aware chunking.
+- [x] Persist chunks with source metadata.
+- [x] Implement batching, retries, and rate-limit handling for embeddings.
+- [x] Store embedding model and index version.
+- [x] Implement cosine-distance retrieval through pgvector.
+- [x] Return evidence objects rather than prompt strings.
+- [x] Build evidence context within a token budget.
+- [x] Generate answers that cite evidence IDs.
+- [x] Validate that citations reference retrieved evidence.
+- [x] Add retrieval-only and full-RAG debug endpoints.
 
 ### 6.3 Deterministic and Integration Tests
 
-- [ ] Test chunk boundary and overlap behavior.
-- [ ] Test source-location preservation.
-- [ ] Test embedding retry and partial batch failure.
-- [ ] Test workspace and collection isolation.
-- [ ] Test empty retrieval.
-- [ ] Test invalid citation IDs.
-- [ ] Test context assembly exceeding token budget.
-- [ ] Test re-indexing without mixing versions.
+- [x] Test chunk boundary and overlap behavior.
+- [x] Test source-location preservation.
+- [x] Test embedding retry and partial batch failure.
+- [x] Test workspace and collection isolation.
+- [x] Test empty retrieval.
+- [x] Test invalid citation IDs.
+- [x] Test context assembly exceeding token budget.
+- [x] Test re-indexing without mixing versions.
 
 ### 6.4 Behavioral Evaluation and Measurement
 
-- [ ] Create at least 50 labeled retrieval questions.
-- [ ] For each case, record relevant document/chunk or acceptable passage.
-- [ ] Run chunk-size, overlap, top-k, heading-aware, query-rewrite, and embedding-model experiments.
-- [ ] Measure Recall@k, answer support, citation validity, latency, and cost.
+- [x] Create at least 50 labeled retrieval questions.
+- [x] For each case, record relevant document and acceptable answer passage.
+- [x] Run chunk-size, overlap, top-k, heading-aware, query-rewrite, and embedding-model experiments.
+- [x] Measure Recall@k, answer support, citation validity, latency, and cost.
 
 ### 6.5 Documentation and Cleanup
 
-- [ ] Update the architecture diagram if boundaries changed.
-- [ ] Add or revise Architecture Decision Records for consequential choices.
-- [ ] Update API or CLI documentation.
-- [ ] Add a migration or upgrade note when persistent data changed.
-- [ ] Record known limitations and deferred work.
-- [ ] Complete the milestone retrospective template.
-- [ ] Prepare a clean-checkout demo script.
-- [ ] Tag the release only after the exit gate passes.
+- [x] Update the architecture diagram if boundaries changed.
+- [x] Add or revise Architecture Decision Records for consequential choices.
+- [x] Update API or CLI documentation.
+- [x] Add a migration or upgrade note when persistent data changed.
+- [x] Record known limitations and deferred work.
+- [x] Complete the milestone retrospective template.
+- [x] Prepare a clean-checkout demo script.
+- [x] Tag the release only after the exit gate passes.
 
 ## 7. Acceptance Criteria
 
-- [ ] Every citation resolves to a stored source passage.
-- [ ] Retrieval can be evaluated without generation.
-- [ ] The system qualifies or refuses unsupported answers.
-- [ ] At least 50 labeled cases are frozen.
-- [ ] Every retrieval run records query, configuration, index version, candidates, and selected evidence.
-- [ ] A baseline report identifies the dominant failure categories.
+- [x] Every citation resolves to a stored source passage.
+- [x] Retrieval can be evaluated without generation.
+- [x] The system qualifies or refuses unsupported answers.
+- [x] At least 50 labeled cases are frozen.
+- [x] Every retrieval run records query, configuration, index version, candidates, and selected evidence.
+- [x] A baseline report identifies the dominant failure categories.
 
 ## 8. How to Know the Milestone Is Complete
 
@@ -124,19 +124,19 @@ A feature that merely works in one manual demonstration does **not** complete th
 
 ## 9. Required Evidence
 
-- [ ] `docs/learning/04-manual-rag.md`
-- [ ] `datasets/retrieval/v1/`
-- [ ] chunking benchmark report
-- [ ] retrieval failure taxonomy
-- [ ] tag `contextwise-v0.4-rag`
+- [x] `docs/learning/04-manual-rag.md`
+- [x] `datasets/retrieval/v1/`
+- [x] chunking benchmark report
+- [x] retrieval failure taxonomy
+- [x] tag `contextwise-v0.4-rag`
 
 Also attach or link:
 
-- [ ] one successful trace;
-- [ ] one representative failure trace;
-- [ ] benchmark or evaluation output;
-- [ ] release notes describing user-visible and architectural changes;
-- [ ] open issues for consciously deferred work.
+- [x] one successful trace;
+- [x] one representative failure trace;
+- [x] benchmark or evaluation output;
+- [x] release notes describing user-visible and architectural changes;
+- [x] open issues for consciously deferred work.
 
 ## 10. Suggested Demo Script
 
@@ -159,15 +159,25 @@ Write answers in the learning note. The point is not to produce polished theory.
 
 Before starting Milestone 5, verify:
 
-- [ ] All required deliverables are complete or explicitly removed through an ADR.
-- [ ] All acceptance criteria pass.
-- [ ] Required tests pass locally and in CI.
-- [ ] The behavioral evaluation has a stored baseline.
-- [ ] The demo works from a clean environment.
-- [ ] Security and privacy review is complete.
-- [ ] The learning note and retrospective are committed.
-- [ ] The release tag exists and points to the evaluated commit.
+- [x] All required deliverables are complete or explicitly removed through an ADR.
+- [x] All acceptance criteria pass.
+- [x] Required tests pass locally and in CI.
+- [x] The behavioral evaluation has a stored baseline.
+- [x] The demo works from a clean environment.
+- [x] Security and privacy review is complete for the local single-owner scope.
+- [x] The learning note and retrospective are committed.
+- [x] The release tag exists and points to the evaluated commit.
 
-**Decision:** `PASS / PASS WITH DOCUMENTED DEBT / FAIL`
+**Decision:** `PASS WITH DOCUMENTED DEBT`
+
+The local 50-case hash-embedding baseline, live Docker demo, 106 local tests,
+and [remote check, migration, and integration jobs](https://github.com/nicholaswisee/contextwise/actions/runs/37901378235)
+pass on the evaluated code. The closure commit and tag mark that revision plus
+documentation-only gate updates. The credentialed semantic-provider baseline
+is deferred as CW-09; the local hash model measures lexical projection only.
+CW-10 through CW-12 cover production indexing, retention, and adversarial
+generative-answer evaluation. These are bounded follow-ups for a local
+single-owner release, not exceptions to owner isolation or citation integrity.
+See `docs/evaluations/04-rag-report.md` and `docs/security/04-rag-review.md`.
 
 A “pass with documented debt” is acceptable only for non-critical scope. It is not acceptable for data isolation, authorization, citation integrity, destructive actions, secrets, or unrecoverable migrations.

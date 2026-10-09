@@ -4,6 +4,13 @@ import subprocess
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def use_deterministic_fake_llm(monkeypatch):
+    monkeypatch.setenv("LLM_PRIMARY_MODEL", "fake-default")
+    monkeypatch.setenv("LLM_MODELS_JSON", "[]")
+    monkeypatch.setenv("LLM_FALLBACK_MODEL", "")
+
+
 def get_test_database_url():
     return os.getenv(
         "TEST_DATABASE_URL",

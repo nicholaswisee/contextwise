@@ -1,14 +1,27 @@
 import asyncio
+import secrets
+from typing import Annotated
 
+from fastapi import Header, HTTPException
+
+from contextwise.application.assistant.service import AssistantService
+from contextwise.application.assistant.title_service import TitleService
+from contextwise.application.ingestion.service import IngestionService
 from contextwise.application.llm.fake_client import FakeLLMClient
 from contextwise.application.llm.generation_service import GenerationService
 from contextwise.application.llm.model_registry import ModelRegistry
 from contextwise.application.llm.prompt_registry import PromptRegistry
 from contextwise.application.llm.schema_registry import SchemaRegistry
+from contextwise.application.rag.embeddings import CloudEmbeddingClient, HashEmbeddingClient
+from contextwise.application.rag.service import RagService
 from contextwise.config import Settings
+from contextwise.infrastructure.conversations import ConversationRepository
 from contextwise.infrastructure.database import Database
+from contextwise.infrastructure.documents import DocumentRepository
 from contextwise.infrastructure.invocations import InvocationRepository
 from contextwise.infrastructure.llm.litellm_client import LiteLLMClient
+from contextwise.infrastructure.object_store import LocalObjectStore
+from contextwise.infrastructure.rag import RagRepository
 
 
 class AppState:
@@ -19,6 +32,14 @@ class AppState:
         self.prompt_registry = PromptRegistry()
         self.schema_registry = SchemaRegistry()
         self.invocation_repository = InvocationRepository(self.database.session_factory)
+        self.conversation_repository = ConversationRepository(self.database.session_factory)
+        self.document_repository = DocumentRepository(self.database.session_factory)
+        self.ingestion_service = IngestionService(
+            self.document_repository,
+            LocalObjectStore(settings.document_store_path),
+            settings.document_max_bytes,
+            settings.ingestion_timeout_seconds,
+        )
         self.llm_clients = {
             model.name: (
                 FakeLLMClient()
@@ -37,6 +58,34 @@ class AppState:
             structured_repair_attempts=settings.llm_structured_repair_attempts,
             fallback_model=settings.llm_fallback_model,
             primary_model=settings.llm_primary_model,
+        )
+        self.rag_repository = RagRepository(self.database.session_factory)
+        embedding = (
+            HashEmbeddingClient(settings.embedding_model.removeprefix("hash-256-"))
+            if settings.embedding_model.startswith("hash-256-")
+            else CloudEmbeddingClient(
+                settings.embedding_model,
+                settings.embedding_api_key or "",
+                settings.embedding_base_url,
+            )
+        )
+        self.rag_service = RagService(self.rag_repository, embedding, self.generation_service)
+        self.title_service = (
+            TitleService(
+                self.generation_service, self.conversation_repository, settings.title_model
+            )
+            if settings.title_model
+            else None
+        )
+        self.assistant_service = AssistantService(
+            repository=self.conversation_repository,
+            invocation_repository=self.invocation_repository,
+            generation_service=self.generation_service,
+            prompt_registry=self.prompt_registry,
+            model_registry=self.model_registry,
+            context_budget=settings.context_budget,
+            output_reserve=settings.output_reserve,
+            title_service=self.title_service,
         )
         self.active_requests = 0
         self.requests_complete = asyncio.Event()
@@ -84,6 +133,18 @@ def get_generation_service() -> GenerationService:
     return get_state().generation_service
 
 
+def get_assistant_service() -> AssistantService:
+    return get_state().assistant_service
+
+
+def get_ingestion_service() -> IngestionService:
+    return get_state().ingestion_service
+
+
+def get_rag_service() -> RagService:
+    return get_state().rag_service
+
+
 def get_invocation_repository() -> InvocationRepository:
     return get_state().invocation_repository
 
@@ -94,3 +155,12 @@ def get_model_registry() -> ModelRegistry:
 
 def get_prompt_registry() -> PromptRegistry:
     return get_state().prompt_registry
+
+
+def require_owner(
+    owner_token: Annotated[str | None, Header(alias="X-Contextwise-Owner")] = None,
+) -> str:
+    settings = get_settings()
+    if owner_token is None or not secrets.compare_digest(owner_token, settings.owner_token):
+        raise HTTPException(status_code=401, detail="invalid owner token")
+    return settings.owner_id

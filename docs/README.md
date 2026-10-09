@@ -13,9 +13,9 @@ This directory converts the Contextwise curriculum into executable milestone wor
 
 - [ ] [00 — Engineering Foundation](milestones/00-engineering-foundation.md) — `v0.0`, Tier A, Small effort
 - [ ] [01 — LLM Gateway and Typed Generation](milestones/01-llm-gateway-typed-generation.md) — `v0.1`, Tier A, Medium effort
-- [ ] [02 — Contextwise Core Assistant](milestones/02-core-assistant.md) — `v0.2`, Tier A, Medium effort
-- [ ] [03 — Document Ingestion Pipeline](milestones/03-document-ingestion.md) — `v0.3`, Tier A, Medium effort
-- [ ] [04 — Manual Dense Retrieval and Cited RAG](milestones/04-manual-rag.md) — `v0.4`, Tier A, Large effort
+- [x] [02 — Contextwise Core Assistant](milestones/02-core-assistant.md) — `v0.2`, Tier A, Medium effort
+- [x] [03 — Document Ingestion Pipeline](milestones/03-document-ingestion.md) — `v0.3`, Tier A, Medium effort
+- [x] [04 — Manual Dense Retrieval and Cited RAG](milestones/04-manual-rag.md) — `v0.4`, Tier A, Large effort
 - [ ] [05 — Hybrid Retrieval and Reranking](milestones/05-hybrid-retrieval-reranking.md) — `v0.5`, Tier A, Large effort
 - [ ] [06 — Safe Tool-Calling Runtime](milestones/06-tool-runtime.md) — `v0.6`, Tier B, Large effort
 - [ ] [07 — Research Assistant Workflow](milestones/07-research-assistant.md) — `v0.7`, Tier B, Large effort

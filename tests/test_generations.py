@@ -17,9 +17,28 @@ def app_with_db(monkeypatch, apply_migrations):
 
 
 @pytest.mark.asyncio
-async def test_generate_returns_fake_provider_result_and_invocation(app_with_db):
+async def test_llm_routes_require_owner_token(app_with_db):
     async with AsyncClient(
         transport=ASGITransport(app=app_with_db), base_url="http://test"
+    ) as client:
+        generation = await client.post("/v1/generations", json={"prompt": "hello"})
+        stream = await client.post("/v1/generations/stream", json={"prompt": "hello"})
+        invocation = await client.get("/v1/invocations/missing")
+        models = await client.get("/v1/models")
+    assert [response.status_code for response in (generation, stream, invocation, models)] == [
+        401,
+        401,
+        401,
+        401,
+    ]
+
+
+@pytest.mark.asyncio
+async def test_generate_returns_fake_provider_result_and_invocation(app_with_db):
+    async with AsyncClient(
+        transport=ASGITransport(app=app_with_db),
+        base_url="http://test",
+        headers={"X-Contextwise-Owner": "local-development-token"},
     ) as client:
         response = await client.post("/v1/generations", json={"prompt": "hello"})
 
@@ -39,7 +58,9 @@ async def test_generate_returns_fake_provider_result_and_invocation(app_with_db)
 @pytest.mark.asyncio
 async def test_generate_returns_validated_registered_schema(app_with_db):
     async with AsyncClient(
-        transport=ASGITransport(app=app_with_db), base_url="http://test"
+        transport=ASGITransport(app=app_with_db),
+        base_url="http://test",
+        headers={"X-Contextwise-Owner": "local-development-token"},
     ) as client:
         response = await client.post(
             "/v1/generations", json={"prompt": "hello", "response_schema": "answer"}
@@ -52,7 +73,9 @@ async def test_generate_returns_validated_registered_schema(app_with_db):
 @pytest.mark.asyncio
 async def test_generate_rejects_unknown_model(app_with_db):
     async with AsyncClient(
-        transport=ASGITransport(app=app_with_db), base_url="http://test"
+        transport=ASGITransport(app=app_with_db),
+        base_url="http://test",
+        headers={"X-Contextwise-Owner": "local-development-token"},
     ) as client:
         response = await client.post(
             "/v1/generations", json={"prompt": "hello", "model": "missing"}
@@ -65,7 +88,9 @@ async def test_generate_rejects_unknown_model(app_with_db):
 @pytest.mark.asyncio
 async def test_stream_emits_chunks_and_completion_event(app_with_db):
     async with AsyncClient(
-        transport=ASGITransport(app=app_with_db), base_url="http://test"
+        transport=ASGITransport(app=app_with_db),
+        base_url="http://test",
+        headers={"X-Contextwise-Owner": "local-development-token"},
     ) as client:
         response = await client.post("/v1/generations/stream", json={"prompt": "hello"})
 
@@ -77,7 +102,9 @@ async def test_stream_emits_chunks_and_completion_event(app_with_db):
 @pytest.mark.asyncio
 async def test_stream_rejects_structured_output_until_stream_validation_exists(app_with_db):
     async with AsyncClient(
-        transport=ASGITransport(app=app_with_db), base_url="http://test"
+        transport=ASGITransport(app=app_with_db),
+        base_url="http://test",
+        headers={"X-Contextwise-Owner": "local-development-token"},
     ) as client:
         response = await client.post(
             "/v1/generations/stream", json={"prompt": "hello", "response_schema": "answer"}
@@ -90,7 +117,9 @@ async def test_stream_rejects_structured_output_until_stream_validation_exists(a
 @pytest.mark.asyncio
 async def test_llm_registries_expose_models_and_prompt_versions(app_with_db):
     async with AsyncClient(
-        transport=ASGITransport(app=app_with_db), base_url="http://test"
+        transport=ASGITransport(app=app_with_db),
+        base_url="http://test",
+        headers={"X-Contextwise-Owner": "local-development-token"},
     ) as client:
         models = await client.get("/v1/models")
         prompts = await client.get("/v1/prompts")
