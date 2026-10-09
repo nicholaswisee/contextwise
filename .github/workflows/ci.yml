@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "milestone-*"]
   pull_request:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
-          version: "0.12.1"
+          version: "0.12.23"
 
       - name: Set up Python
         run: uv python install 3.12
@@ -58,7 +58,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v3
         with:
-          version: "0.12.1"
+          version: "0.12.23"
 
       - name: Install dependencies
         run: uv sync
@@ -71,3 +71,38 @@ jobs:
 
       - name: Downgrade migrations
         run: uv run alembic downgrade base
+
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: contextwise
+          POSTGRES_PASSWORD: contextwise
+          POSTGRES_DB: contextwise_test
+        ports:
+          - 5434:5432
+        options: >-
+          --health-cmd "pg_isready -U contextwise -d contextwise_test"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      TEST_DATABASE_URL: postgresql+asyncpg://contextwise:contextwise@localhost:5434/contextwise_test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.12.23"
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run integration tests
+        run: uv run pytest -m integration -v

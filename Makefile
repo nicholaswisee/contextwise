@@ -16,8 +16,7 @@ test-db-down:
 	docker compose -f docker-compose.test.yml down -v
 
 test-integration: test-db-up
-	TEST_DATABASE_URL=$(TEST_DATABASE_URL) uv run pytest -m integration -v
-	$(MAKE) test-db-down
+	@trap '$(MAKE) test-db-down' EXIT; TEST_DATABASE_URL=$(TEST_DATABASE_URL) uv run pytest -m integration -v
 
 lint:
 	uv run ruff check src tests
