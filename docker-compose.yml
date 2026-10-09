@@ -29,6 +29,9 @@ services:
             LLM_FALLBACK_MODEL: ${LLM_FALLBACK_MODEL:-}
             LLM_MODELS_JSON: ${LLM_MODELS_JSON:-}
             CONTEXTWISE_OWNER_TOKEN: ${CONTEXTWISE_OWNER_TOKEN:?Set CONTEXTWISE_OWNER_TOKEN before starting the API}
+            CONTEXTWISE_DOCUMENT_STORE_PATH: /data/documents
+        volumes:
+            - document-data:/data/documents
         ports:
             - "8000:8000"
         depends_on:
@@ -37,3 +40,4 @@ services:
 
 volumes:
     postgres-data:
+    document-data:
