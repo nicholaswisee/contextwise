@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
-from contextwise.api.dependencies import get_generation_service
+from contextwise.api.dependencies import get_generation_service, require_owner
 from contextwise.application.llm.errors import LLMError
 from contextwise.application.llm.generation_service import (
     GenerationInput,
@@ -14,7 +14,9 @@ from contextwise.application.llm.generation_service import (
     GenerationService,
 )
 
-router = APIRouter(prefix="/v1/generations", tags=["generations"])
+router = APIRouter(
+    prefix="/v1/generations", tags=["generations"], dependencies=[Depends(require_owner)]
+)
 
 
 @router.post("", response_model=GenerationOutput)
