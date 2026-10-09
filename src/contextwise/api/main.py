@@ -12,6 +12,7 @@ from contextwise.api.health import router as health_router
 from contextwise.api.invocations import router as invocations_router
 from contextwise.api.llm_registry import router as llm_registry_router
 from contextwise.api.middleware import RequestIDMiddleware
+from contextwise.api.rag import router as rag_router
 from contextwise.config import Settings
 from contextwise.logging_config import configure_logging
 
@@ -25,6 +26,7 @@ async def lifespan(app: FastAPI) -> Any:
     yield
     await state.wait_for_requests()
     await state.ingestion_service.stop()
+    await state.rag_service.close()
     await state.database.close()
 
 
@@ -44,6 +46,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(llm_registry_router)
     app.include_router(conversations_router)
     app.include_router(documents_router)
+    app.include_router(rag_router)
 
     @app.exception_handler(Exception)
     async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
